@@ -1,7 +1,7 @@
 package top.mryan2005.managesysteminjava;
 
-public class JavaFXBootstrap {
+public class SwingBootstrap {
     public static void main(String[] args) {
-        HelloApplication.main(args);
+        System.out.println("Hello, World!");
     }
 }

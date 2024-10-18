@@ -1,7 +1,10 @@
 package top.mryan2005.managesysteminjava;
 
 public class SwingBootstrap {
+
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        Core core = new Core();
+        String a = core.printPath();
+        core.setVisible(true);
     }
 }

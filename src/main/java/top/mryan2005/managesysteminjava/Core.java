@@ -28,6 +28,33 @@ public class Core extends JFrame {
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
         jMenu.add(jMenuItemExit);
         jMenuItemExit.addActionListener(this::actionPerformed);
+        // build a dock bar like Mac OS
+        // Create the dock bar
+        JPanel dockBar = new JPanel();
+        dockBar.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        dockBar.setBackground(new Color(0, 0, 0, 0)); // Transparent background
+
+        // Add buttons to the dock bar
+        for (int i = 1; i <= 5; i++) {
+            JButton button = new JButton(new ImageIcon(printPath() + "/icon" + i + ".jpg"));
+            button.setSize(50, 50);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);
+            button.setOpaque(true);
+            button.setVisible(true);
+            int finalI = i;
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Button " + finalI + " clicked");
+                }
+            });
+            dockBar.add(button);
+        }
+
+        // Add the dock bar to the bottom of the frame
+        container.add(dockBar, BorderLayout.SOUTH);
         setBounds(0,0,1729,972);
     }
 

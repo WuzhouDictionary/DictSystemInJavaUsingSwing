@@ -38,7 +38,7 @@ jobs:
 
     - name: rename jar
       run: |
-        mv target/DictSystemInJava-lastest.jar target/DictSystemInJava-jdk${{ matrix.version }}.jar
+        mv target/DictSystemInJava-latest.jar target/DictSystemInJava-jdk${{ matrix.version }}.jar
 
     - name: create github release
       uses: softprops/action-gh-release@v2.0.8
@@ -46,5 +46,5 @@ jobs:
         tag_name: ${{github.github_sha}}
         name: ${{github.github_sha}}
         files: |
-          D:\a\ManageSystemInJava\ManageSystemInJava\target\DictSystemInJava-latest.jar
+          D:\a\ManageSystemInJava\ManageSystemInJava\target\DictSystemInJava-jdk${{ matrix.version }}.jar
         make_latest: true

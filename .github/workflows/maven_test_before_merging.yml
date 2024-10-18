@@ -28,7 +28,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: rename jar
       run: |
-        mv target/DictSystemInJava-lastest.jar target/DictSystemInJava-jdk${{ matrix.version }}.jar
+        mv target/DictSystemInJava-latest.jar target/DictSystemInJava-jdk${{ matrix.version }}.jar
         ls target
     - name: Submit Dependency Snapshot
       uses: advanced-security/maven-dependency-submission-action@v4

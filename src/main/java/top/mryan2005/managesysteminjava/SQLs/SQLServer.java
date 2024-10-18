@@ -21,6 +21,10 @@ public class SQLServer {
         return con;
     }
 
+    public void close() throws SQLException {
+        con.close();
+    }
+
     public static void main(String args[]) throws SQLException {
         try {
             SQLServer sql = new SQLServer("127.0.0.1", "1433", "sa", "A123456", "abc");

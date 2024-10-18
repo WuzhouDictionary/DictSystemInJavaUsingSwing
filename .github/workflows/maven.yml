@@ -14,15 +14,17 @@ on:
 
 jobs:
   build:
-
+    permissions: write-all
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        version: [ 21, 22 ]
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 21
+    - name: Set up JDK ${{ matrix.version }}
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '${{ matrix.version }}'
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven

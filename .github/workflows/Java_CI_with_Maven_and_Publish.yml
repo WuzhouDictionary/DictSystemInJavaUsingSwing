@@ -16,16 +16,17 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        version: [ 21, 22 ]
     runs-on: windows-latest
-    permissions:
-      contents: write
-      discussions: write
+    permissions: write-all
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 20
+    - name: Set up JDK ${{ matrix.version }}
       uses: actions/setup-java@v4
       with:
-        java-version: '20'
+        java-version: ${{ matrix.version }}
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven

@@ -106,6 +106,7 @@
             <artifactId>jcudnn</artifactId>
             <version>11.6.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>

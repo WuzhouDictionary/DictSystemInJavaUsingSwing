@@ -84,7 +84,7 @@ public class Core extends JFrame {
 
     public void newIssue(ActionEvent e) {
         JDialog jDialog = new JDialog(this, "New Issue", true);
-        jDialog.setBounds(0,0,500,500);
+        jDialog.setBounds(0,0,500,700);
         jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jDialog.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -92,9 +92,8 @@ public class Core extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = insets;
         JLabel jLabel = new JLabel("Title");
-        JTextField jTextFieldTitle = new JTextField("", 20);
-        jTextFieldTitle.setSize(100, 50);
-        jTextFieldTitle.setColumns(20);
+        JTextField jTextFieldTitle = new JTextField("");
+        jTextFieldTitle.setColumns(30);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1; // 横占一个单元格
@@ -110,9 +109,28 @@ public class Core extends JFrame {
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog.add(jTextFieldTitle, gbc);
         JLabel jLabel2 = new JLabel("Body");
-        JTextArea jTextAreaBody = new JTextArea(20, 20);
-        jTextAreaBody.setSize(100, 50);
-        jTextAreaBody.setColumns(20);
+        TextArea jTextAreaBody = new TextArea("**Describe the bug**\n" +
+                "A clear and concise description of what the bug is.\n" +
+                "\n" +
+                "**To Reproduce**\n" +
+                "Steps to reproduce the behavior:\n" +
+                "1. Go to '...'\n" +
+                "2. Click on '....'\n" +
+                "3. Scroll down to '....'\n" +
+                "4. See error\n" +
+                "\n" +
+                "**Expected behavior**\n" +
+                "A clear and concise description of what you expected to happen.\n" +
+                "\n" +
+                "**Screenshots**\n" +
+                "If applicable, add screenshots to help explain your problem.\n" +
+                "\n" +
+                "**Desktop (please complete the following information):**\n" +
+                " - OS: [e.g. iOS]\n" +
+                " - Version [e.g. 22]\n" +
+                "\n" +
+                "**Additional context**\n" +
+                "Add any other context about the problem here.\n", 30, 30, TextArea.SCROLLBARS_VERTICAL_ONLY);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1; // 横占一个单元格
@@ -127,14 +145,14 @@ public class Core extends JFrame {
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog.add(jTextAreaBody, gbc);
-        JButton jButtonSubmit = new JButton("Submit");
+        JButton jButtonSubmit1 = new JButton("Submit");
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = 1; // 横占一个单元格
         gbc.gridheight = 1; // 列占一个单元格
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
-        jDialog.add(jButtonSubmit, gbc);
+        jDialog.add(jButtonSubmit1, gbc);
         JDialog jDialog1 = new JDialog(this, "请输入验证码", true);
         jDialog1.setLayout(new GridBagLayout());
         Insets insets1 = new Insets(10, 10, 10, 10);
@@ -175,7 +193,7 @@ public class Core extends JFrame {
         gbc1.weightx = 0.0; // 当窗口放大时，长度不变
         gbc1.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog1.add(jButton1, gbc1);
-        jButtonSubmit.addActionListener(e1 -> {
+        jButtonSubmit1.addActionListener(e1 -> {
             if (jTextFieldTitle.getText().equals("") || jTextAreaBody.getText().equals("")) {
                 JOptionPane.showMessageDialog(jDialog1, "Title or Body is empty");
                 return;

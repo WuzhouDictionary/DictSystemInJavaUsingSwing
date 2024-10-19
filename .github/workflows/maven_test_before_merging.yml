@@ -18,6 +18,27 @@ jobs:
     permissions: write-all
     steps:
     - uses: actions/checkout@v4
+    - name: Clone Github Repo Action
+      # You may pin to the exact commit or the version.
+      # uses: GuillaumeFalourd/clone-github-repo-action@19817562c346ff60f9935158dede6c5ece8fd0ac
+      uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+      with:
+        # Repository Owner
+        owner: WuzhouDictionary
+        # Repository name
+        repository: NewIssue
+        # PAT with repository scope (https://github.com/settings/tokens)
+        access-token: ${{ secrets.GITEE_TOKEN }}
+        # Depth of the clone (default: full history)
+        depth: 100
+        # Branch name (default: main)
+        branch: main
+        # Clone with submodules
+        submodule: false
+    - name: move to its part
+      run: |
+        mv ./NewIssue/* ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/
+        rm -rf ./NewIssue
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:

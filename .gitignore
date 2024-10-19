@@ -39,3 +39,4 @@ build/
 
 ### config Files ###
 /src/main/resources/config.json
+/src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/POSTAndGET.java

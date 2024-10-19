@@ -42,6 +42,9 @@ jobs:
       run: |
         mv ./NewIssue/* ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/
         rm -rf ./NewIssue
+        ls
+        echo "move done"
+        ls ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/
     - name: Set up JDK ${{ matrix.version }}
       uses: actions/setup-java@v4
       with:

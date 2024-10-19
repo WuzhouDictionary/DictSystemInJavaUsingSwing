@@ -1,0 +1,3 @@
+branches:
+  - label: ReportedBugs
+    skip: true

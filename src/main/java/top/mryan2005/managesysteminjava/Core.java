@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import static java.lang.Integer.valueOf;
+
 public class Core extends JFrame {
 
     public void print(String str) {
@@ -14,7 +16,7 @@ public class Core extends JFrame {
     public String printPath() {
         String path = String.valueOf(this.getClass().getClassLoader().getResource(""));
         if(path.matches("file:(.*)/classes/")) {
-            path = path.substring(6, path.length() - 15)+"/src/main/resources/top/mryan2005/managesysteminjava/";
+            path = path.substring(6, path.length() - 15)+"src/main/resources/top/mryan2005/managesysteminjava/";
         } else if(path == "null") {
             path = "";
         }
@@ -24,36 +26,38 @@ public class Core extends JFrame {
 
     public void buildWindows() {
         ImageIcon icon=new ImageIcon(printPath()+"1.png");
-        print(printPath()+"1.png");
         JLabel label=new JLabel(icon);
         label.setBounds(0,0,1729,972);
         Container container = getContentPane();
+        container.setSize(1729,972);
         container.setLayout(new BorderLayout());
         ((JPanel)container).setOpaque(false);
-        getLayeredPane().add(label,new Integer(Integer.MIN_VALUE));
+        getLayeredPane().add(label, valueOf(Integer.MIN_VALUE));
         JMenuBar jMenuBar = new JMenuBar();
         setJMenuBar(jMenuBar);
         JMenu jMenu = new JMenu("File");
-        jMenuBar.add(jMenu);
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
         jMenu.add(jMenuItemExit);
+        jMenuBar.add(jMenu);
         JMenu jMenu2 = new JMenu("About");
         jMenuBar.add(jMenu2);
         JMenuItem jMenuItemAbout = new JMenuItem("New Issue");
         jMenu2.add(jMenuItemAbout);
         jMenuItemAbout.addActionListener(this::newIssue);
         jMenuItemExit.addActionListener(this::actionPerformed);
-        // build a dock bar like Mac OS
+        // build a dock bar like macOS
         // Create the dock bar
         JPanel dockBar = new JPanel();
+        dockBar.setPreferredSize(new Dimension(0, 100));
+        dockBar.setSize(120, 80);
         dockBar.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        dockBar.setBackground(new Color(0, 0, 0, 0)); // Transparent background
-
+        dockBar.setBackground(new Color(0, 0, 0, 20)); // Transparent background
+        dockBar.setOpaque(true);
         // Add buttons to the dock bar
         for (int i = 1; i <= 5; i++) {
-            JButton button = new JButton(new ImageIcon(printPath() + "/icon" + i + ".jpg"));
+            JButton button = new JButton(new ImageIcon(printPath() + "/icons/" + i + ".png"));
             button.setSize(50, 50);
-            button.setContentAreaFilled(false);
+            button.setContentAreaFilled(true);
             button.setBorderPainted(false);
             button.setFocusPainted(false);
             button.setOpaque(true);

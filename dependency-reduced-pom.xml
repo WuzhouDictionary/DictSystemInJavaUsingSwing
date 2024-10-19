@@ -44,6 +44,11 @@
           <target>20</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.5.1</version>
+      </plugin>
     </plugins>
   </build>
   <repositories>
@@ -59,12 +64,6 @@
     </repository>
   </repositories>
   <dependencies>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.33</version>
-      <scope>compile</scope>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>

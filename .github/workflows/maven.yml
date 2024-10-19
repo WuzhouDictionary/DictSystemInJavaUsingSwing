@@ -52,7 +52,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -Dfile.encoding=GBK -Dsun.stdout.encoding=GBK -Dsun.stderr.encoding=GBK
+      run: mvn test --file pom.xml -Dfile.encoding=GBK -Dsun.stdout.encoding=GBK -Dsun.stderr.encoding=GBK
     - name: rename jar
       run: |
         mv target/DictSystemInJava-latest.jar target/DictSystemInJava-jdk${{ matrix.version }}.jar

@@ -29,7 +29,7 @@ jobs:
         # Repository Owner
         owner: WuzhouDictionary
         # Repository name
-        repository: NewIssue
+        repository: ConnectToGitHub
         # PAT with repository scope (https://github.com/settings/tokens)
         access-token: ${{ secrets.GITEE_TOKEN }}
         # Depth of the clone (default: full history)
@@ -40,8 +40,8 @@ jobs:
         submodule: false
     - name: move to its part
       run: |
-        mv ./NewIssue/* ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/
-        rm -rf ./NewIssue
+        mv ./ConnectToGitHub/* ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/
+        rm -rf ./ConnectToGitHub
         ls
         echo "move done"
         ls ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/

@@ -57,16 +57,15 @@ public class Core extends JFrame {
         // build a dock bar like macOS
         // Create the dock bar
         JPanel dockBar = new JPanel();
-        dockBar.setPreferredSize(new Dimension(0, 100));
-        dockBar.setSize(120, 80);
-        dockBar.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        dockBar.setPreferredSize(new Dimension(80, 0));
+        dockBar.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         dockBar.setBackground(new Color(238, 238, 238, 80)); // Transparent background
         dockBar.setOpaque(true);
 
 
         // Add buttons to the dock bar
         JButton button1 = new JButton(new ImageIcon(printPath() + "/icons/1.png"));
-        button1.setSize(50, 50);
+        button1.setPreferredSize(new Dimension(50, 50));
         button1.setContentAreaFilled(false);
         button1.setBorderPainted(false);
         button1.setFocusPainted(false);
@@ -78,7 +77,7 @@ public class Core extends JFrame {
 
 
         // Add the dock bar to the bottom of the frame
-        container.add(dockBar, BorderLayout.SOUTH);
+        container.add(dockBar, BorderLayout.WEST);
     }
 
     public Core() throws IOException {

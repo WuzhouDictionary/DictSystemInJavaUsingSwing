@@ -1,13 +1,17 @@
 package top.mryan2005.managesysteminjava;
 import top.mryan2005.managesysteminjava.ConnectToNet.POSTAndGET;
+import top.mryan2005.managesysteminjava.Settings.Info;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
 
 import static java.lang.Integer.valueOf;
 
 public class Core extends JFrame {
+
+    public Info info = new Info();
 
     public void print(String str) {
         System.out.println(str);
@@ -41,42 +45,43 @@ public class Core extends JFrame {
         jMenuBar.add(jMenu);
         JMenu jMenu2 = new JMenu("About");
         jMenuBar.add(jMenu2);
-        JMenuItem jMenuItemAbout = new JMenuItem("New Issue");
-        jMenu2.add(jMenuItemAbout);
-        jMenuItemAbout.addActionListener(this::newIssue);
+        JMenuItem jMenuItemNewIssue = new JMenuItem("New Issue");
+        jMenu2.add(jMenuItemNewIssue);
+        JMenuItem jMenuItemInfo = new JMenuItem("Info");
+        jMenu2.add(jMenuItemInfo);
+        jMenuItemNewIssue.addActionListener(this::newIssue);
         jMenuItemExit.addActionListener(this::actionPerformed);
+        jMenuItemInfo.addActionListener(this::ViewInfo);
+
+
         // build a dock bar like macOS
         // Create the dock bar
         JPanel dockBar = new JPanel();
         dockBar.setPreferredSize(new Dimension(0, 100));
         dockBar.setSize(120, 80);
         dockBar.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        dockBar.setBackground(new Color(0, 0, 0, 20)); // Transparent background
+        dockBar.setBackground(new Color(238, 238, 238, 80)); // Transparent background
         dockBar.setOpaque(true);
+
+
         // Add buttons to the dock bar
-        for (int i = 1; i <= 5; i++) {
-            JButton button = new JButton(new ImageIcon(printPath() + "/icons/" + i + ".png"));
-            button.setSize(50, 50);
-            button.setContentAreaFilled(true);
-            button.setBorderPainted(false);
-            button.setFocusPainted(false);
-            button.setOpaque(true);
-            button.setVisible(true);
-            int finalI = i;
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Button " + finalI + " clicked");
-                }
-            });
-            dockBar.add(button);
-        }
+        JButton button1 = new JButton(new ImageIcon(printPath() + "/icons/1.png"));
+        button1.setSize(50, 50);
+        button1.setContentAreaFilled(false);
+        button1.setBorderPainted(false);
+        button1.setFocusPainted(false);
+        button1.setOpaque(true);
+        button1.setVisible(true);
+        button1.addActionListener(e -> System.out.println("Button 1 clicked"));
+        dockBar.add(button1);
+        button1.requestFocus();
+
 
         // Add the dock bar to the bottom of the frame
         container.add(dockBar, BorderLayout.SOUTH);
     }
 
-    public Core() {
+    public Core() throws IOException {
         super("Wuzhou Dictionary");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0,0,1729,972);
@@ -84,6 +89,59 @@ public class Core extends JFrame {
 
     public void actionPerformed(ActionEvent e) {
         System.exit(0);
+    }
+
+
+    public void ViewInfo(ActionEvent e) {
+        JDialog jDialog = new JDialog(this, "Info", true);
+        jDialog.setBounds(0, 0, 300, 500);
+        jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialog.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        Insets insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        JLabel jLabel = new JLabel("Wuzhou Dictionary");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel, gbc);
+        JLabel jLabel2 = new JLabel("Version: " + info.Version);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel2, gbc);
+        JLabel jLabel3 = new JLabel("Author: " + info.Author);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel3, gbc);
+        JLabel jLabel5 = new JLabel("Data Provider: " + info.DataProvider);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel5, gbc);
+        JLabel jLabel4 = new JLabel("License: " + info.License);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel4, gbc);
+        jDialog.setVisible(true);
     }
 
     public void newIssue(ActionEvent e) {

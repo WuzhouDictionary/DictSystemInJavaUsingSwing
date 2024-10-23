@@ -59,7 +59,7 @@ public class Core extends JFrame {
         JPanel dockBar = new JPanel();
         dockBar.setPreferredSize(new Dimension(80, 0));
         dockBar.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        dockBar.setBackground(new Color(238, 238, 238, 80)); // Transparent background
+        dockBar.setBackground(new Color(238, 238, 238, 0)); // Transparent background
         dockBar.setOpaque(true);
 
 

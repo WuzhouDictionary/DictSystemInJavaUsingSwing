@@ -76,7 +76,15 @@ public class Core extends JFrame {
         button1.setOpaque(true);
         button1.setVisible(true);
         button1.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Button 1 clicked");
+            JDialog jDialog = new JDialog(this, "Dictionary", true);
+            jDialog.setBounds(0, 0, 300, 500);
+            jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            jDialog.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            Insets insets = new Insets(10, 10, 10, 10);
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.insets = insets;
+            jDialog.setVisible(true);
         });
         dockBar.add(button1);
         button1.requestFocus();
@@ -89,7 +97,15 @@ public class Core extends JFrame {
         button2.setOpaque(true);
         button2.setVisible(true);
         button2.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Button 2 clicked");
+            JDialog jDialog = new JDialog(this, "Admin", true);
+            jDialog.setBounds(0, 0, 300, 500);
+            jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            jDialog.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            Insets insets = new Insets(10, 10, 10, 10);
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.insets = insets;
+            jDialog.setVisible(true);
         });
         dockBar.add(button2);
 

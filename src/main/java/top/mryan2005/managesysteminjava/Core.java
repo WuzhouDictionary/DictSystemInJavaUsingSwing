@@ -43,6 +43,10 @@ public class Core extends JFrame {
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
         jMenu.add(jMenuItemExit);
         jMenuBar.add(jMenu);
+        JMenu jMenu1 = new JMenu("Window");
+        jMenuBar.add(jMenu1);
+        JMenuItem jMenuItemGoBack = new JMenuItem("Go Back");
+        jMenu1.add(jMenuItemGoBack);
         JMenu jMenu2 = new JMenu("About");
         jMenuBar.add(jMenu2);
         JMenuItem jMenuItemNewIssue = new JMenuItem("New Issue");
@@ -58,7 +62,7 @@ public class Core extends JFrame {
         // Create the dock bar
         JPanel dockBar = new JPanel();
         dockBar.setPreferredSize(new Dimension(80, 0));
-        dockBar.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        dockBar.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         dockBar.setBackground(new Color(238, 238, 238, 0)); // Transparent background
         dockBar.setOpaque(true);
 
@@ -77,6 +81,17 @@ public class Core extends JFrame {
         dockBar.add(button1);
         button1.requestFocus();
 
+        JButton button2 = new JButton(new ImageIcon(printPath() + "/icons/2.png"));
+        button2.setPreferredSize(new Dimension(50, 50));
+        button2.setContentAreaFilled(false);
+        button2.setBorderPainted(false);
+        button2.setFocusPainted(false);
+        button2.setOpaque(true);
+        button2.setVisible(true);
+        button2.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Button 2 clicked");
+        });
+        dockBar.add(button2);
 
         // Add the dock bar to the bottom of the frame
         container.add(dockBar, BorderLayout.WEST);

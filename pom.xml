@@ -4,11 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <repositories>
-    <repository>
-        <id>central-repos</id>
-        <name>Central Repository</name>
-        <url>https://repo.maven.apache.org/maven2</url>
-    </repository>
+        <repository>
+            <id>tencentmaven</id>
+            <name>Tencent Maven</name>
+            <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public</url>
+            <!--这里配置只下载releases版本的构件，忽略snapshots版本-->
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>central-repos</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
     </repositories>
 
     <groupId>top.mryan2005</groupId>

@@ -71,7 +71,9 @@ public class Core extends JFrame {
         button1.setFocusPainted(false);
         button1.setOpaque(true);
         button1.setVisible(true);
-        button1.addActionListener(e -> System.out.println("Button 1 clicked"));
+        button1.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Button 1 clicked");
+        });
         dockBar.add(button1);
         button1.requestFocus();
 

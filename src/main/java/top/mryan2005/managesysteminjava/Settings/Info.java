@@ -10,6 +10,7 @@ import static java.lang.String.valueOf;
 public class Info {
     public String Version = "1.0.0";
     public String Author = "Wuzhou Dictionary Organization";
+    public String Description;
     public String License = "MIT";
     public String DataProvider;
     public Info() throws IOException {
@@ -19,6 +20,7 @@ public class Info {
         this.Version = readJSON.getJSONContent().getString("Version");
         this.Author = readJSON.getJSONContent().getString("Author");
         this.DataProvider = readJSON.getJSONContent().getString("DataProvider");
+        this.Description = valueOf(repoInfo.get("description"));
         String license = valueOf(repoInfo.get("license"));
         if("Other".matches(license)) {
             this.License = "CC-BY-NC-ND";

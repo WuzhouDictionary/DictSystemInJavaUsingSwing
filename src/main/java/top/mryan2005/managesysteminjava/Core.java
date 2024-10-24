@@ -5,6 +5,7 @@ import top.mryan2005.managesysteminjava.Settings.Info;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Random;
 import javax.swing.*;
 
 import static java.lang.Integer.valueOf;
@@ -141,7 +142,15 @@ public class Core extends JFrame {
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog.add(jLabel, gbc);
-        JLabel jLabel2 = new JLabel("Version: " + info.Version);
+        String showedDescription = "<html><body>Description: ";
+        for(int i = 0; i < info.Description.length(); i++) {
+            if(i % 20 == 0 && i != 0 && info.Description.charAt(i) == ' ') {
+                showedDescription += "<br/>";
+            }
+            showedDescription += info.Description.charAt(i);
+        }
+        showedDescription += "</body></html>";
+        JLabel jLabel2 = new JLabel(showedDescription);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1; // 横占一个单元格
@@ -173,6 +182,14 @@ public class Core extends JFrame {
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog.add(jLabel4, gbc);
+        JLabel jLabel6 = new JLabel("Version: " + info.Version);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel6, gbc);
         jDialog.setVisible(true);
     }
 
@@ -294,7 +311,7 @@ public class Core extends JFrame {
             }
             jDialog1.setBounds(0,0,500,500);
             jDialog1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            Integer PW = new java.util.Random().nextInt(1000000);
+            Integer PW = new Random().nextInt(1000000);
             jLabelPW2.setText("验证码为 "+PW.toString());
             jButton1.addActionListener(e11 -> {
                 if (!jTextFieldPW.getText().equals(PW.toString())) {

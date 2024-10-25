@@ -27,7 +27,7 @@ public class SQLServer {
 
     public static void main(String args[]) throws SQLException {
         try {
-            SQLServer sql = new SQLServer("127.0.0.1", "1433", "sa", "A123456", "abc");
+            SQLServer sql = new SQLServer("127.0.0.1", "1433", "sa", "123456", "abc");
             System.out.println("连接成功！");
         } catch (SQLException e) {
             System.out.println("连接数据库时发生错误！");

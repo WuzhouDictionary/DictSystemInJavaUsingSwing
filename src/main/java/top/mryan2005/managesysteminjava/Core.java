@@ -44,10 +44,6 @@ public class Core extends JFrame {
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
         jMenu.add(jMenuItemExit);
         jMenuBar.add(jMenu);
-        JMenu jMenu1 = new JMenu("Window");
-        jMenuBar.add(jMenu1);
-        JMenuItem jMenuItemGoBack = new JMenuItem("Go Back");
-        jMenu1.add(jMenuItemGoBack);
         JMenu jMenu2 = new JMenu("About");
         jMenuBar.add(jMenu2);
         JMenuItem jMenuItemNewIssue = new JMenuItem("New Issue");
@@ -117,6 +113,32 @@ public class Core extends JFrame {
             jDialog.setVisible(true);
         });
         dockBar.add(button2);
+
+        JButton button3 = new JButton(new ImageIcon(printPath() + "/icons/3.png"));
+        button3.setPreferredSize(new Dimension(50, 50));
+        button3.setContentAreaFilled(false);
+        button3.setBorderPainted(false);
+        button3.setFocusPainted(false);
+        button3.setOpaque(true);
+        button3.setVisible(true);
+        button3.addActionListener(e -> {
+            JDialog jDialog = new JDialog(this, "Settings", true);
+            jDialog.setBounds(0, 0, 300, 500);
+            jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            jDialog.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            Insets insets = new Insets(10, 10, 10, 10);
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.insets = insets;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jDialog.setVisible(true);
+        });
+        dockBar.add(button3);
 
         // Add the dock bar to the bottom of the frame
         container.add(dockBar, BorderLayout.WEST);

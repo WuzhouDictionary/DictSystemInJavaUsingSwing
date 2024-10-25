@@ -106,6 +106,14 @@ public class Core extends JFrame {
             Insets insets = new Insets(10, 10, 10, 10);
             gbc.fill = GridBagConstraints.BOTH;
             gbc.insets = insets;
+            JButton jButtonShowAll = new JButton("Show All");
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jDialog.add(jButtonShowAll, gbc);
             jDialog.setVisible(true);
         });
         dockBar.add(button2);
@@ -195,7 +203,7 @@ public class Core extends JFrame {
 
     public void newIssue(ActionEvent e) {
         JDialog jDialog = new JDialog(this, "New Issue", true);
-        jDialog.setBounds(0,0,500,700);
+        jDialog.setBounds(0,0,800,700);
         jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jDialog.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -219,7 +227,8 @@ public class Core extends JFrame {
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog.add(jTextFieldTitle, gbc);
-        JLabel jLabel2 = new JLabel("Body");
+        JLabel jLabel2 = new JLabel("<html><body>" +
+                "Body（Body部分支持<br/>Markdown语句，书<br/>写时，请按照<br/>Markdown格式书写</body></html>");
         TextArea jTextAreaBody = new TextArea("**Describe the bug**\n" +
                 "A clear and concise description of what the bug is.\n" +
                 "\n" +

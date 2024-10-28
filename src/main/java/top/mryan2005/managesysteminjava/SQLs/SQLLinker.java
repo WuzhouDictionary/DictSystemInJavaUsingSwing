@@ -62,6 +62,19 @@ public class SQLLinker {
         return null;
     }
 
+    public ResultSet runSQL(String sql) {
+        try {
+            Statement stmt = con.createStatement();
+            if (stmt.execute(sql)) {
+                return stmt.getResultSet();
+            }
+        } catch (SQLException e) {
+            System.out.println("执行SQL语句时发生错误！");
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public void addEntry(String sql) {
         try {
             Statement stmt = con.createStatement();
@@ -98,7 +111,7 @@ public class SQLLinker {
 
     public static void main(String args[]) throws SQLException {
         try {
-            SQLLinker sql = new SQLLinker("SQL Server", "127.0.0.1", "1433", "sa", "A123456", "wuzhouDict");
+            SQLLinker sql = new SQLLinker("SQL Server", "127.0.0.1", "1433", "sa", "123456", "wuzhouDict");
             System.out.println("连接成功！");
             ResultSet res = sql.executeQuery("SELECT * FROM entry.aPart");
             while(res.next()) {

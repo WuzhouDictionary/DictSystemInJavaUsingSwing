@@ -15,6 +15,11 @@ public class testLinker {
             while (res.next()) {
                 System.out.println(res.getString("name")+" "+res.getString("QQ"));
             }
+            sqlLinker.runSQL("INSERT INTO test.test1 VALUES ('mryan2005', '123456')");
+            res = sqlLinker.executeQuery("SELECT * FROM test.test1");
+            while (res.next()) {
+                System.out.println(res.getString("name")+" "+res.getString("QQ"));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

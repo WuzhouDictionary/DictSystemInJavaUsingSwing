@@ -12,7 +12,7 @@ public class SQLite {
         if(path.matches("file:(.*)/classes/")) {
             path = path.substring(6, path.length() - 15) + "src/main/resources/top/mryan2005/managesysteminjava/";
         } else if(path.matches("file:(.*)/target/(.*)")) {
-            path =  "/home/runner/work/ManageSystemInJava/ManageSystemInJava/src/test/resources/top/mryan2005/managesysteminjava/";
+            path =  "/home/runner/work/DictSystemInJavaUsingSwing/DictSystemInJavaUsingSwing/src/test/resources/top/mryan2005/managesysteminjava/";
         } else if(path == "null") {
             path = "";
         }

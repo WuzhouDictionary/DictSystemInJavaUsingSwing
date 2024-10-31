@@ -124,4 +124,21 @@ public class SQLLinker {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean testConnection() {
+        if(con == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean closeConnection() {
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }

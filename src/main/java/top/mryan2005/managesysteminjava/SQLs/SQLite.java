@@ -14,12 +14,12 @@ public class SQLite {
         } else if(path == "null") {
             path = "";
         }
-        System.out.println(path);
         return path;
     }
 
     public SQLite(String databaseFileName) throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
+        System.out.println(getPath()+databaseFileName);
         con = java.sql.DriverManager.getConnection("jdbc:sqlite:"+getPath()+databaseFileName);
     }
 

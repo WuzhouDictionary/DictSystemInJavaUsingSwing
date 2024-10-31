@@ -36,7 +36,7 @@ public class SQLLinker {
         }
     }
 
-    public SQLLinker(String databaseName) throws SQLException {
+    public SQLLinker(String type, String databaseName) throws SQLException {
         try {
             SQLite sql = new SQLite(databaseName);
             System.out.println("连接成功！");

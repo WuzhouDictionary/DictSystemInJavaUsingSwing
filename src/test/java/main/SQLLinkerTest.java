@@ -4,10 +4,10 @@ import org.junit.Test;
 import top.mryan2005.managesysteminjava.SQLs.*;
 
 import java.sql.Array;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLLinkerTest {
     @Test
@@ -24,19 +24,24 @@ public class SQLLinkerTest {
 
     @Test
     public void TestSQLite() throws SQLException, ClassNotFoundException {
-        SQLLinker sqlite = new SQLLinker("test");
+        SQLLinker sqlite = new SQLLinker("SQLite", "test");
         assertTrue(sqlite.testConnection());
     }
 
     @Test
     public void TestCloseSQLite() throws SQLException, ClassNotFoundException {
-        SQLLinker sqlite = new SQLLinker("test");
+        SQLLinker sqlite = new SQLLinker("SQLite", "test");
         assertTrue(sqlite.closeConnection());
     }
 
     @Test
     public void TestReadSQLite() throws SQLException, ClassNotFoundException {
-        SQLLinker sqlite = new SQLLinker("test");
-        assertArrayEquals(new String[]{"mryan2005"}, new Array[]{sqlite.runSQL("SELECT * FROM test").getArray(1)});
+        SQLLinker sqlite = new SQLLinker("SQLite", "test");
+        ResultSet res = sqlite.runSQL("SELECT * FROM test");
+        String[] result = new String[2];
+        while (res.next()) {
+            result[0] = res.getString("Name");
+        }
+        assertSame("Mryan2005", result[0]);
     }
 }

@@ -3,8 +3,10 @@ package main;
 import org.junit.Test;
 import top.mryan2005.managesysteminjava.SQLs.*;
 
+import java.sql.Array;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SQLLinkerTest {
@@ -24,5 +26,17 @@ public class SQLLinkerTest {
     public void TestSQLite() throws SQLException, ClassNotFoundException {
         SQLLinker sqlite = new SQLLinker("test");
         assertTrue(sqlite.testConnection());
+    }
+
+    @Test
+    public void TestCloseSQLite() throws SQLException, ClassNotFoundException {
+        SQLLinker sqlite = new SQLLinker("test");
+        assertTrue(sqlite.closeConnection());
+    }
+
+    @Test
+    public void TestReadSQLite() throws SQLException, ClassNotFoundException {
+        SQLLinker sqlite = new SQLLinker("test");
+        assertArrayEquals(new String[]{"mryan2005"}, new Array[]{sqlite.runSQL("SELECT * FROM test1").getArray(1)});
     }
 }

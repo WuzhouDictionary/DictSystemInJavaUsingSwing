@@ -36,6 +36,19 @@ public class SQLLinker {
         }
     }
 
+    public SQLLinker(String databaseName) throws SQLException {
+        try {
+            SQLite sql = new SQLite(databaseName);
+            System.out.println("连接成功！");
+            con = sql.getSQLer();
+        } catch (SQLException e) {
+            System.out.println("连接数据库时发生错误！");
+            System.out.println(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ResultSet executeQuery(String sql) throws SQLException, ClassNotFoundException {
         Statement stmt = con.createStatement();
         try {

@@ -19,4 +19,10 @@ public class SQLLinkerTest {
         SQLLinker mysql = new SQLLinker("MySQL", "127.0.0.1", "3800", "root", "123456", "testDatabase");
         assertTrue(mysql.closeConnection());
     }
+
+    @Test
+    public void TestSQLite() throws SQLException, ClassNotFoundException {
+        SQLLinker sqlite = new SQLLinker("test");
+        assertTrue(sqlite.testConnection());
+    }
 }

@@ -8,14 +8,20 @@ public class SQLServer {
 
     public SQLServer(String ip, String port, String username, String password, String databaseName) throws SQLException, ClassNotFoundException {
         Class.forName( "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        connect(ip, port, username, password, databaseName);
+    }
+
+    public void connect(String ip, String port, String username, String password, String databaseName) throws SQLException {
         this.username = username;
         this.password = password;
         this.databaseName = databaseName;
         this.ip = ip;
         this.port = port;
-        connectionUrl = "jdbc:sqlserver://"+ip+":"+port+";databaseName="+databaseName+";user="+username+";password="+password+";encrypt=false;";
+        connectionUrl = "jdbc:sqlserver://" + ip + ":" + port + ";databaseName=" + databaseName + ";user=" + username + ";password=" + password + ";encrypt=false;";
         con = DriverManager.getConnection(connectionUrl);
     }
+
+    public SQLServer() {}
 
     public Connection getSQLer() {
         return con;

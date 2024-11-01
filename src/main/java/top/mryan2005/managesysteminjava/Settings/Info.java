@@ -16,10 +16,10 @@ public class Info {
     public Info() throws IOException {
         POSTAndGET postAndGet = new POSTAndGET();
         Map<String, Object> repoInfo = postAndGet.getRepoInfo();
-        readJSON readJSON = new readJSON("src/main/resources/info.json");
-        this.Version = readJSON.getJSONContent().getString("Version");
-        this.Author = readJSON.getJSONContent().getString("Author");
-        this.DataProvider = readJSON.getJSONContent().getString("DataProvider");
+        readJSON readjson = new readJSON("src/main/resources/info.json");
+        this.Version = readjson.getJSONContent().getString("Version");
+        this.Author = readjson.getJSONContent().getString("Author");
+        this.DataProvider = readjson.getJSONContent().getString("DataProvider");
         this.Description = valueOf(repoInfo.get("description"));
         String license = valueOf(repoInfo.get("license"));
         if("Other".matches(license)) {

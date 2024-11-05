@@ -35,10 +35,6 @@ jobs:
       with:
         path: ~/.m2
         key: ${{ hashFiles('pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
     - name: Clone Github Repo Action
       # You may pin to the exact commit or the version.
       # uses: GuillaumeFalourd/clone-github-repo-action@19817562c346ff60f9935158dede6c5ece8fd0ac

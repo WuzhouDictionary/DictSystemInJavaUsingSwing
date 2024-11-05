@@ -43,7 +43,7 @@ jobs:
         submodule: false
     - name: move to its part
       run: |
-        copy-item -path ".\\ConnectToGitHub" -destination ".\\src\\main\\java\\top\\mryan2005\\managesysteminjava\\ConnectToNet"
+        copy-item -path ".\\ConnectToGitHub" -destination ".\\src\\main\\java\\top\\mryan2005\\managesysteminjava\\ConnectToNet" -recurse
         remove-item  ".\\ConnectToGitHub\\*"
     - name: Set up JDK ${{ matrix.version }}
       uses: actions/setup-java@v4

@@ -49,6 +49,10 @@ public class SQLLinker {
         }
     }
 
+    public Connection getSQLer() {
+        return con;
+    }
+
     public ResultSet executeQuery(String sql) throws SQLException, ClassNotFoundException {
         Statement stmt = con.createStatement();
         try {

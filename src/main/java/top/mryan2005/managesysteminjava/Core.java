@@ -1,10 +1,17 @@
 package top.mryan2005.managesysteminjava;
 import top.mryan2005.managesysteminjava.ConnectToNet.POSTAndGET;
+import top.mryan2005.managesysteminjava.SQLs.SQLLinker;
 import top.mryan2005.managesysteminjava.Settings.Info;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.swing.*;
 
@@ -13,6 +20,9 @@ import static java.lang.Integer.valueOf;
 public class Core extends JFrame {
 
     public Info info = new Info();
+
+    private SQLLinker sql;
+
     private boolean isLogin = false;
 
     public void print(String str) {
@@ -82,6 +92,33 @@ public class Core extends JFrame {
             Insets insets = new Insets(10, 10, 10, 10);
             gbc.fill = GridBagConstraints.BOTH;
             gbc.insets = insets;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            JButton jButtonSearch = new JButton("Search");
+            jDialog.add(jButtonSearch, gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            JButton jButtonViewAll = new JButton("View All");
+            jButtonViewAll.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        createViewWindow("All");
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+            jDialog.add(jButtonViewAll, gbc);
+
             jDialog.setVisible(true);
         });
         dockBar.add(button1);
@@ -153,10 +190,11 @@ public class Core extends JFrame {
         container.add(dockBar, BorderLayout.WEST);
     }
 
-    public Core() throws IOException {
+    public Core() throws IOException, SQLException {
         super("Wuzhou Dictionary");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0,0,1729,972);
+        sql = new SQLLinker("SQL Server", "127.0.0.1", "1433", "sa", "123456", "wuzhouDict");
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -500,5 +538,37 @@ public class Core extends JFrame {
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialogInput.add(LoginButton, gbc);
         jDialogInput.setVisible(true);
+    }
+
+    public void createViewWindow(String types) throws SQLException {
+        JDialog jDialog = new JDialog(this, "View", true);
+        jDialog.setBounds(0, 0, 600, 500);
+        jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialog.setLayout(new FlowLayout());
+        String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
+        List<Object[]> l = new ArrayList<>();
+        ResultSet res;
+        if(types.matches("aPart"))
+            res = sql.runSQL("SELECT * FROM entry.aPart ORDER BY id");
+        else if(types.matches("bPart"))
+            res = sql.runSQL("SELECT * FROM entry.bPart ORDER BY id");
+        else if(types.matches("cPart"))
+            res = sql.runSQL("SELECT * FROM entry.cPart ORDER BY id");
+        else if(types.matches("All"))
+            res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
+        else
+            res = sql.runSQL("SELECT * FROM entry.all ORDER BY id");
+        while (res.next()) {
+            l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
+        }
+        Object[][] data = new Object[l.size()][6];
+        for(int i = 0; i < l.size(); i++) {
+            data[i] = l.get(i);
+        }
+        JTable jTable = new JTable(data, columnNames);
+        JScrollPane scroll = new JScrollPane(jTable);
+        scroll.setSize(300, 200);
+        jDialog.add(scroll);
+        jDialog.setVisible(true);
     }
 }

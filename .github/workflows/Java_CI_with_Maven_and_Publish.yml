@@ -82,7 +82,7 @@ jobs:
         tag_name: ${{github.github_sha}}
         name: ${{github.github_sha}}
         files: |
-          ".\target\DictSystemInJava-jdk${{ matrix.version }}.jar"
+          .\target\DictSystemInJava-jdk${{ matrix.version }}.jar
         make_latest: false
         draft: false
         prerelease: true

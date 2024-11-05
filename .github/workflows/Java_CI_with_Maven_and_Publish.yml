@@ -43,8 +43,8 @@ jobs:
         submodule: false
     - name: move to its part
       run: |
-        mv ./ConnectToGitHub/* ./src/main/java/top/mryan2005/managesysteminjava/ConnectToNet/
-        rm -rf ./ConnectToGitHub
+        copy-item -path ".\\ConnectToGitHub" -destination ".\\src\\main\\java\\top\\mryan2005\\managesysteminjava\\ConnectToNet"
+        remove-item  ".\\ConnectToGitHub\\*"
     - name: Set up JDK ${{ matrix.version }}
       uses: actions/setup-java@v4
       with:
@@ -60,9 +60,10 @@ jobs:
 
     - name: rename jar
       run: |
-        mv target/DictSystemInJava-latest.jar target/DictSystemInJava-jdk${{ matrix.version }}.jar
+        rename-item "target\\DictSystemInJava-latest.jar" -newname "target\DictSystemInJava-jdk${{ matrix.version }}.jar"
 
     - name: create github release
+      if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/V')
       uses: softprops/action-gh-release@v2.0.8
       with:
         tag_name: ${{github.github_sha}}
@@ -72,4 +73,17 @@ jobs:
         make_latest: true
         draft: false
         prerelease: false
+        token: ${{ secrets.GITEE_TOKEN }}
+
+    - name: create github release
+      if: startsWith(github.ref, 'refs/tags/test-')
+      uses: softprops/action-gh-release@v2.0.8
+      with:
+        tag_name: ${{github.github_sha}}
+        name: ${{github.github_sha}}
+        files: |
+          D:\a\ManageSystemInJava\ManageSystemInJava\target\DictSystemInJava-jdk${{ matrix.version }}.jar
+        make_latest: false
+        draft: false
+        prerelease: true
         token: ${{ secrets.GITEE_TOKEN }}

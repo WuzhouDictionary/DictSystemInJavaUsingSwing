@@ -24,6 +24,10 @@ jobs:
     permissions: write-all
     steps:
     - uses: actions/checkout@v4
+    - uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ hashFiles('pom.xml') }}
     - name: Clone Github Repo Action
       # You may pin to the exact commit or the version.
       # uses: GuillaumeFalourd/clone-github-repo-action@19817562c346ff60f9935158dede6c5ece8fd0ac
@@ -82,7 +86,7 @@ jobs:
         tag_name: ${{github.github_sha}}
         name: ${{github.github_sha}}
         files: |
-          .\target\DictSystemInJava-jdk${{ matrix.version }}.jar
+          ${{github.workspace}}/target/DictSystemInJava-jdk${{ matrix.version }}.jar
         make_latest: false
         draft: false
         prerelease: true

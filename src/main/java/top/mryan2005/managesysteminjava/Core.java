@@ -99,6 +99,12 @@ public class Core extends JFrame {
             gbc.weightx = 0.0; // 当窗口放大时，长度不变
             gbc.weighty = 0.0; // 当窗口放大时，高度不变
             JButton jButtonSearch = new JButton("Search");
+            jButtonSearch.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    createSearchWindow();
+                }
+            });
             jDialog.add(jButtonSearch, gbc);
             gbc.gridx = 0;
             gbc.gridy = 1;
@@ -110,11 +116,7 @@ public class Core extends JFrame {
             jButtonViewAll.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        createViewWindow();
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    createViewWindow();
                 }
             });
             jDialog.add(jButtonViewAll, gbc);
@@ -540,8 +542,9 @@ public class Core extends JFrame {
         jDialogInput.setVisible(true);
     }
 
-    public void createViewWindow() throws SQLException {
+    public void createViewWindow() {
         final String[] types = {""};
+        Object[][] data;
         JDialog jDialogGetWhich = new JDialog(this, "select", true);
         jDialogGetWhich.setBounds(0, 0, 300, 500);
         jDialogGetWhich.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -555,6 +558,7 @@ public class Core extends JFrame {
         for(String item: selections) {
             comboBox.addItem(item);
         }
+        comboBox.setSelectedItem("All");
         comboBox.setSize(100, 50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -642,17 +646,94 @@ public class Core extends JFrame {
             res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
         else
             res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
-        while (res.next()) {
-            l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
-        }
-        Object[][] data = new Object[l.size()][6];
-        for(int i = 0; i < l.size(); i++) {
-            data[i] = l.get(i);
+        try {
+            while (res.next()) {
+                l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
+            }
+            data = new Object[l.size()][6];
+            for (int i = 0; i < l.size(); i++) {
+                data[i] = l.get(i);
+            }
+        } catch (SQLException e) {
+            data = new Object[0][6];
         }
         JTable jTable = new JTable(data, columnNames);
         JScrollPane scroll = new JScrollPane(jTable);
         scroll.setSize(300, 200);
         jDialog.add(scroll);
         jDialog.setVisible(true);
+    }
+
+    public void createSearchWindow() {
+        final String[] input = new String[1];
+        JDialog jDialog = new JDialog(this, "Search", true);
+        jDialog.setBounds(0, 0, 400, 500);
+        jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialog.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        Insets insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        JLabel jLabel = new JLabel("Search");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jLabel, gbc);
+        JTextField jTextField = new JTextField("", 20);
+        jTextField.setColumns(20);
+        jTextField.setSize(100, 50);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialog.add(jTextField, gbc);
+        JButton jButton = new JButton("Search");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                input[0] = jTextField.getText();
+                jDialog.dispose();
+            }
+        });
+        jDialog.add(jButton, gbc);
+        jDialog.setVisible(true);
+        if(input[0] == null) {
+            return;
+        }
+        JDialog jDialog1 = new JDialog(this, "Search Result", true);
+        jDialog1.setBounds(0, 0, 600, 500);
+        jDialog1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialog1.setLayout(new FlowLayout());
+        String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
+        List<Object[]> l = new ArrayList<>();
+        Object[][] data;
+        try {
+            ResultSet res = sql.runSQL("SELECT * FROM entry.viewAll WHERE simplified_Chinese_character LIKE '%" + input[0] + "%' UNION SELECT * FROM entry.viewAll WHERE traditional_Chinese_character LIKE '%" + input[0] + "%'");
+            while (res.next()) {
+                l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
+            }
+            data = new Object[l.size()][6];
+            for (int i = 0; i < l.size(); i++) {
+                data[i] = l.get(i);
+            }
+        } catch (SQLException e) {
+            data = new Object[0][6];
+        }
+        JTable jTable = new JTable(data, columnNames);
+        JScrollPane scroll = new JScrollPane(jTable);
+        scroll.setSize(300, 200);
+        jDialog1.add(scroll);
+        jDialog1.setVisible(true);
     }
 }

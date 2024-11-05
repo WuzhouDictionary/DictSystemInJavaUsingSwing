@@ -42,6 +42,6 @@ public class SQLLinkerTest {
         while (res.next()) {
             result[0] = res.getString("name");
         }
-        assertSame("Mryan2005", result[0]);
+        assertSame("mryan2005", result[0]);
     }
 }

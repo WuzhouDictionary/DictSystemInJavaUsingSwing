@@ -24,10 +24,10 @@ jobs:
     permissions: write-all
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/cache@v2
+    - uses: actions/cache@v4
       with:
-        path: ~/.m2
-        key: ${{ hashFiles('pom.xml') }}
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('pom.xml') }}
     - name: Clone Github Repo Action
       # You may pin to the exact commit or the version.
       # uses: GuillaumeFalourd/clone-github-repo-action@19817562c346ff60f9935158dede6c5ece8fd0ac

@@ -36,7 +36,7 @@ public class SQLLinkerTest {
 
     @Test
     public void TestReadSQLite() throws SQLException, ClassNotFoundException {
-        SQLLinker sqlite = new SQLLinker("SQLite", "test");
+        SQLLinker sqlite = new SQLLinker("SQLite", "test.db");
         ResultSet res = sqlite.runSQL("SELECT * FROM test1");
         String[] result = new String[2];
         while (res.next()) {

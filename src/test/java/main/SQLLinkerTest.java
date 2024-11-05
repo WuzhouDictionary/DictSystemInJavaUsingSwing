@@ -35,6 +35,13 @@ public class SQLLinkerTest {
         assertTrue(sqlite.closeConnection());
     }
 
+    public boolean equalString(String A, String B) {
+        if(A.matches(B)) {
+            return true;
+        }
+        return false;
+    }
+
     @Test
     public void TestReadSQLite() throws SQLException, ClassNotFoundException {
         SQLLinker sqlite = new SQLLinker("SQLite", "test.db");
@@ -43,6 +50,6 @@ public class SQLLinkerTest {
         while (res.next()) {
             result[0] = res.getString("name");
         }
-        assertSame("mryan2005", valueOf(result[0]));
+        assertTrue(equalString("mryan2005", valueOf(result[0])));
     }
 }

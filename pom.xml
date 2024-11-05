@@ -45,7 +45,7 @@
         <junit.version>5.11.2</junit.version>
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
-        <start-class>top.mryan2005.managesysteminjava.JavaFXBootstrap</start-class>
+        <start-class>top.mryan2005.managesysteminjava.SwingBootstrap</start-class>
     </properties>
 
     <dependencies>

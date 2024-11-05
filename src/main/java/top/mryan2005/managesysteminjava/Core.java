@@ -111,7 +111,7 @@ public class Core extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        createViewWindow("All");
+                        createViewWindow();
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -540,7 +540,45 @@ public class Core extends JFrame {
         jDialogInput.setVisible(true);
     }
 
-    public void createViewWindow(String types) throws SQLException {
+    public void createViewWindow() throws SQLException {
+        final String[] types = {""};
+        JDialog jDialogGetWhich = new JDialog(this, "select", true);
+        jDialogGetWhich.setBounds(0, 0, 300, 500);
+        jDialogGetWhich.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialogGetWhich.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        Insets insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        JComboBox comboBox = new JComboBox();
+        String[] selections = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "All"};
+        for(String item: selections) {
+            comboBox.addItem(item);
+        }
+        comboBox.setSize(100, 50);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogGetWhich.add(comboBox, gbc);
+        JButton jButtonSubmit = new JButton("Submit");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jButtonSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                types[0] = comboBox.getSelectedItem().toString();
+                jDialogGetWhich.dispose();
+            }
+        });
+        jDialogGetWhich.add(jButtonSubmit, gbc);
+        jDialogGetWhich.setVisible(true);
         JDialog jDialog = new JDialog(this, "View", true);
         jDialog.setBounds(0, 0, 600, 500);
         jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -548,16 +586,62 @@ public class Core extends JFrame {
         String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
         List<Object[]> l = new ArrayList<>();
         ResultSet res;
-        if(types.matches("aPart"))
+        if(types[0].matches("A"))
             res = sql.runSQL("SELECT * FROM entry.aPart ORDER BY id");
-        else if(types.matches("bPart"))
+        else if(types[0].matches("B"))
             res = sql.runSQL("SELECT * FROM entry.bPart ORDER BY id");
-        else if(types.matches("cPart"))
+        else if(types[0].matches("C"))
             res = sql.runSQL("SELECT * FROM entry.cPart ORDER BY id");
-        else if(types.matches("All"))
+        else if(types[0].matches("D"))
+            res = sql.runSQL("SELECT * FROM entry.dPart ORDER BY id");
+        else if(types[0].matches("E"))
+            res = sql.runSQL("SELECT * FROM entry.ePart ORDER BY id");
+        else if(types[0].matches("F"))
+            res = sql.runSQL("SELECT * FROM entry.fPart ORDER BY id");
+        else if(types[0].matches("G"))
+            res = sql.runSQL("SELECT * FROM entry.gPart ORDER BY id");
+        else if(types[0].matches("H"))
+            res = sql.runSQL("SELECT * FROM entry.hPart ORDER BY id");
+        else if(types[0].matches("I"))
+            res = sql.runSQL("SELECT * FROM entry.iPart ORDER BY id");
+        else if(types[0].matches("J"))
+            res = sql.runSQL("SELECT * FROM entry.jPart ORDER BY id");
+        else if(types[0].matches("K"))
+            res = sql.runSQL("SELECT * FROM entry.kPart ORDER BY id");
+        else if(types[0].matches("L"))
+            res = sql.runSQL("SELECT * FROM entry.lPart ORDER BY id");
+        else if(types[0].matches("M"))
+            res = sql.runSQL("SELECT * FROM entry.mPart ORDER BY id");
+        else if(types[0].matches("N"))
+            res = sql.runSQL("SELECT * FROM entry.nPart ORDER BY id");
+        else if(types[0].matches("O"))
+            res = sql.runSQL("SELECT * FROM entry.oPart ORDER BY id");
+        else if(types[0].matches("P"))
+            res = sql.runSQL("SELECT * FROM entry.pPart ORDER BY id");
+        else if(types[0].matches("Q"))
+            res = sql.runSQL("SELECT * FROM entry.qPart ORDER BY id");
+        else if(types[0].matches("R"))
+            res = sql.runSQL("SELECT * FROM entry.rPart ORDER BY id");
+        else if(types[0].matches("S"))
+            res = sql.runSQL("SELECT * FROM entry.sPart ORDER BY id");
+        else if(types[0].matches("T"))
+            res = sql.runSQL("SELECT * FROM entry.tPart ORDER BY id");
+        else if(types[0].matches("U"))
+            res = sql.runSQL("SELECT * FROM entry.uPart ORDER BY id");
+        else if(types[0].matches("V"))
+            res = sql.runSQL("SELECT * FROM entry.vPart ORDER BY id");
+        else if(types[0].matches("W"))
+            res = sql.runSQL("SELECT * FROM entry.wPart ORDER BY id");
+        else if(types[0].matches("X"))
+            res = sql.runSQL("SELECT * FROM entry.xPart ORDER BY id");
+        else if(types[0].matches("Y"))
+            res = sql.runSQL("SELECT * FROM entry.yPart ORDER BY id");
+        else if(types[0].matches("Z"))
+            res = sql.runSQL("SELECT * FROM entry.zPart ORDER BY id");
+        else if(types[0].matches("All"))
             res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
         else
-            res = sql.runSQL("SELECT * FROM entry.all ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
         while (res.next()) {
             l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
         }

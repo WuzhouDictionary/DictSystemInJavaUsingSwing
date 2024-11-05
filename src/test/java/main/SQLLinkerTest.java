@@ -7,6 +7,7 @@ import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static java.lang.String.valueOf;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLLinkerTest {
@@ -42,6 +43,6 @@ public class SQLLinkerTest {
         while (res.next()) {
             result[0] = res.getString("name");
         }
-        assertSame("mryan2005", result[0]);
+        assertSame("mryan2005", valueOf(result[0]));
     }
 }

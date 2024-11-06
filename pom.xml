@@ -355,7 +355,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>top.mryan2005.managesysteminjava.JavaFXBootstrap</mainClass>
+                                    <mainClass>top.mryan2005.managesysteminjava.SwingBootstrap</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>
@@ -391,7 +391,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                top.mryan2005.managesysteminjava/top.mryan2005.managesysteminjava.JavaFXBootstrap
+                                top.mryan2005.managesysteminjava/top.mryan2005.managesysteminjava.SwingBootstrap
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

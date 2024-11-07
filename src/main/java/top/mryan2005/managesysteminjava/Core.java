@@ -543,7 +543,7 @@ public class Core extends JFrame {
     }
 
     public void createViewWindow() {
-        final String[] types = {""};
+        final String[] types = {"", ""};
         Object[][] data;
         JDialog jDialogGetWhich = new JDialog(this, "select", true);
         jDialogGetWhich.setBounds(0, 0, 300, 500);
@@ -553,6 +553,19 @@ public class Core extends JFrame {
         Insets insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = insets;
+        JComboBox comboBoxPlace = new JComboBox();
+        String[] selections1 = {"梧州", "苍梧石桥", "蒙山"};
+        for(String item: selections1) {
+            comboBoxPlace.addItem(item);
+        }
+        comboBoxPlace.setSize(100, 50);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogGetWhich.add(comboBoxPlace, gbc);
         JComboBox comboBox = new JComboBox();
         String[] selections = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "All"};
         for(String item: selections) {
@@ -561,7 +574,7 @@ public class Core extends JFrame {
         comboBox.setSelectedItem("All");
         comboBox.setSize(100, 50);
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 1; // 横占一个单元格
         gbc.gridheight = 1; // 列占一个单元格
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
@@ -569,7 +582,7 @@ public class Core extends JFrame {
         jDialogGetWhich.add(comboBox, gbc);
         JButton jButtonSubmit = new JButton("Submit");
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 1; // 横占一个单元格
         gbc.gridheight = 1; // 列占一个单元格
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
@@ -578,6 +591,7 @@ public class Core extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 types[0] = comboBox.getSelectedItem().toString();
+                types[1] = comboBoxPlace.getSelectedItem().toString();
                 jDialogGetWhich.dispose();
             }
         });
@@ -590,8 +604,12 @@ public class Core extends JFrame {
         String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
         List<Object[]> l = new ArrayList<>();
         ResultSet res;
+        String place = null;
+        if(types[1].matches("梧州")) {
+            place = "Wuzhou";
+        }
         if(types[0].matches("A"))
-            res = sql.runSQL("SELECT * FROM entry.aPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.main WHERE Pronunciation_of_"+place+" LIKE 'a%' ORDER BY id");
         else if(types[0].matches("B"))
             res = sql.runSQL("SELECT * FROM entry.bPart ORDER BY id");
         else if(types[0].matches("C"))
@@ -647,12 +665,16 @@ public class Core extends JFrame {
         else
             res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
         try {
-            while (res.next()) {
-                l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
-            }
-            data = new Object[l.size()][6];
-            for (int i = 0; i < l.size(); i++) {
-                data[i] = l.get(i);
+            if(res != null) {
+                while (res.next()) {
+                    l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
+                }
+                data = new Object[l.size()][6];
+                for (int i = 0; i < l.size(); i++) {
+                    data[i] = l.get(i);
+                }
+            } else {
+                data = new Object[0][6];
             }
         } catch (SQLException e) {
             data = new Object[0][6];

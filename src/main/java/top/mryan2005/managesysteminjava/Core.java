@@ -742,8 +742,10 @@ public class Core extends JFrame {
         Object[][] data;
         try {
             ResultSet res = sql.runSQL("SELECT * FROM entry.viewAll WHERE simplified_Chinese_character LIKE '%" + input[0] + "%' UNION SELECT * FROM entry.viewAll WHERE traditional_Chinese_character LIKE '%" + input[0] + "%'");
-            while (res.next()) {
-                l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
+            if (res != null) {
+                while (res.next()) {
+                    l.add(new Object[]{res.getString("id"), res.getString("simplified_Chinese_character"), res.getString("traditional_Chinese_character"), res.getString("Pronunciation_of_Wuzhou"), res.getString("Pronunciation_of_Cangwu_Shiqiao"), res.getString("Pronunciation_of_Mengshan")});
+                }
             }
             data = new Object[l.size()][6];
             for (int i = 0; i < l.size(); i++) {

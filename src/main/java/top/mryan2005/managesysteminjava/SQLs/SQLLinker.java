@@ -82,7 +82,7 @@ public class SQLLinker {
     public ResultSet runSQL(String sql) {
         try {
             Statement stmt = con.createStatement();
-            if (stmt.execute(sql)) {
+            if (stmt.execute(sql) && sql.matches("SELECT(.*)")) {
                 return stmt.getResultSet();
             }
         } catch (SQLException e) {

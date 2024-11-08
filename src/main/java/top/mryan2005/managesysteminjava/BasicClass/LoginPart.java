@@ -36,7 +36,20 @@ public class LoginPart {
         }
         try {
             while (res.next()) {
-                User user = new User(res.getString("username"), res.getString("password"), res.getString("level"), res.getString("role"), res.getString("name"), res.getString("avator"));
+                String role = switch (res.getInt("role")) {
+                    case 0 -> "forbidden";
+                    case 1 -> "admin";
+                    case 2 -> "public";
+                    case 3 -> "Dictionary Admin";
+                    case 4 -> "professor";
+                    case 5 -> "Community Admin";
+                    case 6 -> "Owner";
+                    default -> "";
+                };
+                if(role.matches("")) {
+                    continue;
+                }
+                User user = new User(res.getString("username"), res.getString("password"), res.getInt("level"), role, res.getString("name"), res.getString("avator"));
                 users.put(res.getString("username"), user);
             }
         } catch (SQLException e) {
@@ -78,32 +91,136 @@ public class LoginPart {
 
     public void setAvatar(String username, String avatar) {
         sql.runSQL("UPDATE Users.[user] SET avatar = '" + avatar + "' WHERE username = '" + username + "'");
+        users.get(username).avatar = avatar;
     }
 
     public void setUName(String username, String UName) {
         sql.runSQL("UPDATE Users.[user] SET name = '" + UName + "' WHERE username = '" + username + "'");
+        users.get(username).UName = UName;
     }
 
     public void setPassword(String username, String password) {
         password = runMd5(password);
         sql.runSQL("UPDATE Users.[user] SET password = '" + password + "' WHERE username = '" + username + "'");
+        users.get(username).password = password;
     }
 
     public void setSex(String username, String sex) {
         sql.runSQL("UPDATE Users.[user] SET sex = '" + sex + "' WHERE username = '" + username + "'");
+        users.get(username).Sex = sex;
     }
 
     public void setLevel(String username, int level) {
         sql.runSQL("UPDATE Users.[user] SET level = '" + valueOf(level) + "' WHERE username = '" + username + "'");
+        users.get(username).level = level;
     }
 
-    public void setRole(String username, int role) {
-        sql.runSQL("UPDATE Users.[user] SET role = '" + valueOf(role) + "' WHERE username = '" + username + "'");
+    public String LevelUp(String username, String Operator) {
+        if(users.get(Operator).role.matches("Owner") || users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Community Admin")) {
+            if(users.get(username) == null) {
+                return "用户不存在！";
+            }
+            sql.runSQL("UPDATE Users.[user] SET level = " + valueOf(users.get(username).level+1) + " WHERE username = '" + username + "'");
+            users.get(username).level = users.get(username).level+1;
+            return "";
+        } else {
+            return "权限不足！";
+        }
     }
 
-    public void removeUser(String username) {
-        sql.runSQL("DELETE FROM Users.[user] WHERE username = '" + username + "'");
-        readUsersTable();
+    public String LevelUp(String username, String Operator, int dis) {
+        if(users.get(Operator).role.matches("Owner") || users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Community Admin")) {
+            if(users.get(username) == null) {
+                return "用户不存在！";
+            }
+            sql.runSQL("UPDATE Users.[user] SET level = " + valueOf(users.get(username).level+dis) + " WHERE username = '" + username + "'");
+            users.get(username).level = users.get(username).level+dis;
+            return "";
+        } else {
+            return "权限不足！";
+        }
+    }
+
+    public void levelDown(String username, String Operator) {
+        if(users.get(Operator).role.matches("Owner") || users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Community Admin")) {
+            if(users.get(username) == null) {
+                return;
+            }
+            sql.runSQL("UPDATE Users.[user] SET level = " + valueOf(users.get(username).level-1) + " WHERE username = '" + username + "'");
+            users.get(username).level = users.get(username).level-1;
+        }
+    }
+
+    public void levelDown(String username, String Operator, int dis) {
+        if(users.get(Operator).role.matches("Owner") || users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Community Admin")) {
+            if(users.get(username) == null) {
+                return;
+            }
+            sql.runSQL("UPDATE Users.[user] SET level = " + valueOf(users.get(username).level-dis) + " WHERE username = '" + username + "'");
+            users.get(username).level = users.get(username).level-dis;
+        }
+    }
+
+    public void removeUser(String username, String Operator) {
+        if(users.get(Operator).role.matches("Owner")) {
+            return;
+        } else if((users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Owner")) && !users.get(username).role.matches("Owner")) {
+            sql.runSQL("DELETE FROM Users.[user] WHERE username = '" + username + "'");
+            users.remove(username);
+        }
+    }
+
+    public void forbidAnUser(String username, String Operator) {
+        if(users.get(Operator).role.matches("Owner")) {
+            return;
+        } else if((users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Owner") || users.get(Operator).role.matches("Community Admin")) && (!users.get(username).role.matches("Owner") || !users.get(username).role.matches("admin") || !users.get(username).role.matches("Community Admin"))) {
+            sql.runSQL("UPDATE Users.[user] SET role = '0' WHERE username = '" + username + "'");
+            users.get(username).role = "forbidden";
+        }
+    }
+
+    public void allowAnUser(String username, String Operator) {
+        if(!users.get(Operator).role.matches("forbidden")) {
+            return;
+        } else if(users.get(Operator).role.matches("admin") || users.get(Operator).role.matches("Owner") || users.get(Operator).role.matches("Community Admin")) {
+            sql.runSQL("UPDATE Users.[user] SET role = '2' WHERE username = '" + username + "'");
+            users.get(username).role = "public";
+        }
+    }
+
+    public void ChangeUserRole(String username, String Operator, String role) {
+        if(users.get(Operator).role.matches("Owner")) {
+            return;
+        } else if(users.get(username) == null) {
+            return;
+        } else if(users.get(Operator).role.matches("Owner")) {
+            int res = switch (role) {
+                case "admin" -> 1;
+                case "Dictionary Admin" -> 3;
+                case "professor" -> 4;
+                case "Community Admin" -> 5;
+                case "public" -> 2;
+                default -> 0;
+            };
+            if(users.get(username).role.matches(role)) {
+                return;
+            }
+            sql.runSQL("UPDATE Users.[user] SET role = "+valueOf(res)+" WHERE username = '" + username + "'");
+            users.get(username).role = role;
+        } else if(users.get(Operator).role.matches("admin")) {
+            int res = switch (role) {
+                case "Dictionary Admin" -> 3;
+                case "professor" -> 4;
+                case "Community Admin" -> 5;
+                case "public" -> 2;
+                default -> 0;
+            };
+            if(users.get(username).role.matches(role)) {
+                return;
+            }
+            sql.runSQL("UPDATE Users.[user] SET role = "+valueOf(res)+" WHERE username = '" + username + "'");
+            users.get(username).role = role;
+        }
     }
 
     public static void main(String[] args) {
@@ -117,6 +234,9 @@ public class LoginPart {
             } else {
                 System.out.println("登录失败！");
             }
+            login.setAvatar("test", "test");
+            login.setUName("test", "test");
+            login.setPassword("test", "123456");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

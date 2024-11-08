@@ -13,7 +13,7 @@ public class LoginPart {
 
     private SQLLinker sql;
 
-    private HashMap<String, User> users = new HashMap<String, User>();
+    private HashMap<String, User> users = new HashMap<>();
 
     public String getMaxId() {
         ResultSet res = sql.runSQL("SELECT MAX(id) 'maxid' FROM Users.[user]");
@@ -107,7 +107,7 @@ public class LoginPart {
 
     public void setSex(String username, String sex) {
         sql.runSQL("UPDATE Users.[user] SET sex = '" + sex + "' WHERE username = '" + username + "'");
-        users.get(username).Sex = sex;
+        users.get(username).sex = sex;
     }
 
     public void setLevel(String username, int level) {
@@ -120,8 +120,9 @@ public class LoginPart {
             if(users.get(username) == null) {
                 return "用户不存在！";
             }
-            sql.runSQL("UPDATE Users.[user] SET level = " + (users.get(username).level + 1) + " WHERE username = '" + username + "'");
-            users.get(username).level = users.get(username).level+1;
+            int res = users.get(username).level + 1;
+            sql.runSQL("UPDATE Users.[user] SET level = " + res + " WHERE username = '" + username + "'");
+            users.get(username).level = res;
             return "";
         } else {
             return "权限不足！";
@@ -133,8 +134,9 @@ public class LoginPart {
             if(users.get(username) == null) {
                 return "用户不存在！";
             }
-            sql.runSQL("UPDATE Users.[user] SET level = " + (users.get(username).level + dis) + " WHERE username = '" + username + "'");
-            users.get(username).level = users.get(username).level+dis;
+            int res = users.get(username).level + dis;
+            sql.runSQL("UPDATE Users.[user] SET level = " + res + " WHERE username = '" + username + "'");
+            users.get(username).level = res;
             return "";
         } else {
             return "权限不足！";
@@ -146,8 +148,9 @@ public class LoginPart {
             if(users.get(username) == null) {
                 return;
             }
-            sql.runSQL("UPDATE Users.[user] SET level = " + (users.get(username).level - 1) + " WHERE username = '" + username + "'");
-            users.get(username).level = users.get(username).level-1;
+            int res = users.get(username).level - 1;
+            sql.runSQL("UPDATE Users.[user] SET level = " + res + " WHERE username = '" + username + "'");
+            users.get(username).level = res;
         }
     }
 
@@ -156,8 +159,9 @@ public class LoginPart {
             if(users.get(username) == null) {
                 return;
             }
-            sql.runSQL("UPDATE Users.[user] SET level = " + (users.get(username).level - dis) + " WHERE username = '" + username + "'");
-            users.get(username).level = users.get(username).level-dis;
+            int res = users.get(username).level - dis;
+            sql.runSQL("UPDATE Users.[user] SET level = " + res + " WHERE username = '" + username + "'");
+            users.get(username).level = res;
         }
     }
 

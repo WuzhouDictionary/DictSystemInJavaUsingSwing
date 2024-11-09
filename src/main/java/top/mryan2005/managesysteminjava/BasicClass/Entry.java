@@ -1,9 +1,13 @@
 package top.mryan2005.managesysteminjava.BasicClass;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class Entry {
+    public String currentHash;  // 当前哈希
     public String simplified_Chinese_character;     // 简体中文字符
     public String traditional_Chinese_character;    // 繁体中文字符
     public String Pronunciation_of_Wuzhou;         // 梧州话发音
@@ -47,9 +51,18 @@ public class Entry {
         for(String contributor : Contributors) {
             html += "<p>@" + contributor + "</p>";
         }
+        html += "<hr />";
+        html += "<p>当前哈希：" + currentHash + "</p>";
         html += "</body></html>";
         return html;
     }
+
+    public String generateCurrentHash() {
+        Base64 base64 = new Base64();
+        currentHash = DigestUtils.md5Hex(base64.encode(html.getBytes()));
+        return currentHash;
+    }
+
     public static void main(String[] args) {
         Entry entry = new Entry();
         entry.simplified_Chinese_character = "你";
@@ -71,6 +84,8 @@ public class Entry {
         JFrame frame = new JFrame();
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        entry.generateHTML();
+        entry.generateCurrentHash();
         frame.add(new JLabel(entry.generateHTML()));
         frame.setVisible(true);
     }

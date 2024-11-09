@@ -24,6 +24,7 @@ public class Entry {
     public int total_number_of_strokes_traditional; // 繁体笔画总数
     public int total_number_of_radical_strokes_simplified;  // 简体部首笔画总数
     public int total_number_of_radical_strokes_traditional; // 繁体部首笔画总数
+    public String phrases;  // 词组
     public String html; // HTML代码
     public ArrayList<String> Contributors; // 贡献者
     public String generateHTML() {
@@ -38,6 +39,7 @@ public class Entry {
                 "</head><body>" +
                 "<h1>" + simplified_Chinese_character + "</h1>" +
                 "<h2>" + traditional_Chinese_character + "</h2>" +
+                "<p>词组：" + phrases + "</p>" +
                 "<p>梧州话发音：" + Pronunciation_of_Wuzhou + "</p>" +
                 "<p>苍梧石桥话发音：" + Pronunciation_of_Cangwu_Shiqiao + "</p>" +
                 "<p>蒙山话发音：" + Pronunciation_of_Mengshan + "</p>" +

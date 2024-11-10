@@ -2,11 +2,13 @@ package top.mryan2005.managesysteminjava.BasicClass;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-
+import org.springframework.util.DigestUtils;
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class Entry {
@@ -39,7 +41,7 @@ public class Entry {
                 "</head><body>" +
                 "<h1>" + simplified_Chinese_character + "</h1>" +
                 "<h2>" + traditional_Chinese_character + "</h2>" +
-                "<p>词组：" + phrases + "</p>" +
+//                "<p>词组：" + phrases + "</p>" +
                 "<p>梧州话发音：" + Pronunciation_of_Wuzhou + "</p>" +
                 "<p>苍梧石桥话发音：" + Pronunciation_of_Cangwu_Shiqiao + "</p>" +
                 "<p>蒙山话发音：" + Pronunciation_of_Mengshan + "</p>" +
@@ -62,13 +64,13 @@ public class Entry {
         return html;
     }
 
-    public String generateCurrentHash() {
+    public String generateCurrentHash() throws UnsupportedEncodingException {
         Base64 base64 = new Base64();
-        currentHash = DigestUtils.md5Hex(base64.encode(html.getBytes()));
+        currentHash = DigestUtils.md5DigestAsHex(html.getBytes("GBK"));
         return currentHash;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         Entry entry = new Entry();
         entry.simplified_Chinese_character = "你";
         entry.traditional_Chinese_character = "你";
@@ -86,14 +88,93 @@ public class Entry {
         entry.Contributors = new ArrayList<>();
         entry.Contributors.add("mryan2005");
         entry.Contributors.add("gungbbogedding");
-        JFrame frame = new JFrame();
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        entry.viewEntry(entry);
+    }
+
+    public void viewEntry(Entry entry) throws UnsupportedEncodingException {
+        JFrame jDialog = new JFrame();
+        jDialog.setSize(800, 600);
+        jDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        jDialog.setLayout(new FlowLayout());
         entry.generateHTML();
         entry.generateCurrentHash();
-        frame.add(new JLabel(entry.generateHTML()));
-        entry.editEntry(frame);
-        frame.setVisible(true);
+        JLabel jLabel = new JLabel(entry.generateHTML());
+        jDialog.add(jLabel);
+        JButton jButton = new JButton("编辑");
+        jDialog.add(jButton);
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editEntry(jDialog);
+                entry.generateHTML();
+                try {
+                    entry.generateCurrentHash();
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
+                jLabel.setText(entry.generateHTML());
+                jLabel.paintImmediately(jLabel.getVisibleRect());
+            }
+        });
+        jDialog.add(jButton);
+        JButton jButton1 = new JButton("刷新");
+        jDialog.add(jButton1);
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                entry.generateHTML();
+                try {
+                    entry.generateCurrentHash();
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
+                jLabel.setText(entry.generateHTML());
+                jLabel.paintImmediately(jLabel.getVisibleRect());
+            }
+        });
+        jDialog.setVisible(true);
+    }
+
+    public void viewEntry(Entry entry, JFrame parentJFrame) throws UnsupportedEncodingException {
+        JDialog jDialog = new JDialog(parentJFrame);
+        jDialog.setSize(800, 600);
+        jDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        jDialog.setLayout(new FlowLayout());
+        entry.generateHTML();
+        entry.generateCurrentHash();
+        JLabel jLabel = new JLabel(entry.generateHTML());
+        jDialog.add(jLabel);
+        JButton jButton = new JButton("编辑");
+        jDialog.add(jButton);
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editEntry(jDialog);
+                entry.generateHTML();
+                try {
+                    entry.generateCurrentHash();
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
+                jLabel.setText(entry.generateHTML());
+            }
+        });
+        jDialog.add(jButton);
+        JButton jButton1 = new JButton("刷新");
+        jDialog.add(jButton1);
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                entry.generateHTML();
+                try {
+                    entry.generateCurrentHash();
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
+                jLabel.setText(entry.generateHTML());
+            }
+        });
+        jDialog.setVisible(true);
     }
 
     public void editEntry(JFrame parentJFrame) {
@@ -205,6 +286,17 @@ public class Entry {
         jDialog.add(jTextFieldTotalNumberOfStrokesTraditional, gridBagConstraints);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridwidth = 1;
+        JTable jTable = new JTable();
+        TableColumn tableColumn = new TableColumn();
+        tableColumn.setHeaderValue("贡献者");
+        jTable.addColumn(tableColumn);
+        jDialog.add(jTable, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridwidth = 3;
+        jDialog.add(jTable, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.gridwidth = 1;
         JButton jButton = new JButton("保存");
         jDialog.add(jButton, gridBagConstraints);
@@ -338,6 +430,17 @@ public class Entry {
         jDialog.add(jTextFieldTotalNumberOfStrokesTraditional, gridBagConstraints);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridwidth = 1;
+        JTable jTable = new JTable();
+        TableColumn tableColumn = new TableColumn();
+        tableColumn.setHeaderValue("贡献者");
+        jTable.addColumn(tableColumn);
+        jDialog.add(jTable, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridwidth = 3;
+        jDialog.add(jTable, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.gridwidth = 1;
         JButton jButton = new JButton("保存");
         jDialog.add(jButton, gridBagConstraints);

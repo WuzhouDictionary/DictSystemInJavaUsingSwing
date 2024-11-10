@@ -2,7 +2,6 @@ package top.mryan2005.managesysteminjava.BasicClass;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.util.DigestUtils;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
@@ -27,7 +26,7 @@ public class Entry {
     public int total_number_of_radical_strokes_simplified;  // 简体部首笔画总数
     public int total_number_of_radical_strokes_traditional; // 繁体部首笔画总数
     public String phrases;  // 词组
-    public String html; // HTML代码
+    public String html, dispHtml; // HTML代码
     public ArrayList<String> Contributors; // 贡献者
     public String generateHTML() {
         html = "<html><head>" +
@@ -59,14 +58,13 @@ public class Entry {
             html += "<p>@" + contributor + "</p>";
         }
         html += "<hr />";
-        html += "<p>当前哈希：" + currentHash + "</p>";
         html += "</body></html>";
         return html;
     }
 
     public String generateCurrentHash() throws UnsupportedEncodingException {
         Base64 base64 = new Base64();
-        currentHash = DigestUtils.md5DigestAsHex(html.getBytes("GBK"));
+        currentHash = DigestUtils.md5Hex(html.getBytes("utf-8"));
         return currentHash;
     }
 
@@ -96,9 +94,10 @@ public class Entry {
         jDialog.setSize(800, 600);
         jDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         jDialog.setLayout(new FlowLayout());
-        entry.generateHTML();
+        dispHtml = entry.generateHTML();
         entry.generateCurrentHash();
-        JLabel jLabel = new JLabel(entry.generateHTML());
+        dispHtml = dispHtml.replaceAll("</body></html>", "<p>当前哈希：" + entry.currentHash + "</p></body></html>");
+        JLabel jLabel = new JLabel(dispHtml);
         jDialog.add(jLabel);
         JButton jButton = new JButton("编辑");
         jDialog.add(jButton);
@@ -106,13 +105,14 @@ public class Entry {
             @Override
             public void actionPerformed(ActionEvent e) {
                 editEntry(jDialog);
-                entry.generateHTML();
+                dispHtml = entry.generateHTML();
                 try {
                     entry.generateCurrentHash();
                 } catch (UnsupportedEncodingException ex) {
                     throw new RuntimeException(ex);
                 }
-                jLabel.setText(entry.generateHTML());
+                dispHtml = dispHtml.replaceAll("</body></html>", "<p>当前哈希：" + entry.currentHash + "</p></body></html>");
+                jLabel.setText(dispHtml);
                 jLabel.paintImmediately(jLabel.getVisibleRect());
             }
         });
@@ -122,13 +122,14 @@ public class Entry {
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                entry.generateHTML();
+                dispHtml = entry.generateHTML();
                 try {
                     entry.generateCurrentHash();
                 } catch (UnsupportedEncodingException ex) {
                     throw new RuntimeException(ex);
                 }
-                jLabel.setText(entry.generateHTML());
+                dispHtml = dispHtml.replaceAll("</body></html>", "<p>当前哈希：" + entry.currentHash + "</p></body></html>");
+                jLabel.setText(dispHtml);
                 jLabel.paintImmediately(jLabel.getVisibleRect());
             }
         });

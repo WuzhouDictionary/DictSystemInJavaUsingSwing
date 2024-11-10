@@ -1,8 +1,10 @@
 package top.mryan2005.managesysteminjava.BasicClass;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import top.mryan2005.managesysteminjava.SQLs.SQLLinker;
+import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -61,7 +63,7 @@ public class LoginPart {
         sql = sql1;
     }
 
-    public void register(String username, String password, String Sex, String UName) {
+    public void register(String username, String password, String Sex, String UName) throws UnsupportedEncodingException {
         readUsersTable();
         if (username.matches("") || password.matches("") || UName.matches("")) {
             return;
@@ -73,7 +75,7 @@ public class LoginPart {
         sql.runSQL("INSERT INTO Users.[user] (id, username, password, Sex, name) VALUES ('" + getMaxId() +"', '" + username + "', '" + password + "', '" + Sex + "', '" + UName + "')");
     }
 
-    public boolean login(String username, String password) {
+    public boolean login(String username, String password) throws UnsupportedEncodingException {
         readUsersTable();
         password = runMd5(password);
         if (users.containsKey(username)) {
@@ -82,16 +84,16 @@ public class LoginPart {
         return false;
     }
 
-    private String runMd5(String password) {
+    private String runMd5(String password) throws UnsupportedEncodingException {
         for (int i = 0; i < 5; i++) {
-            password = DigestUtils.md5Hex(password);
+            password = DigestUtils.md5Hex(password.getBytes("utf-8"));
         }
         return password;
     }
 
-    public void setAvatar(String username, String avatar) {
-        sql.runSQL("UPDATE Users.[user] SET avatar = '" + avatar + "' WHERE username = '" + username + "'");
-        users.get(username).avatar = avatar;
+    public void setAvatar(String username, String avator) {
+        sql.runSQL("UPDATE Users.[user] SET avator = '" + avator + "' WHERE username = '" + username + "'");
+        users.get(username).avatar = avator;
     }
 
     public void setUName(String username, String UName) {
@@ -99,7 +101,7 @@ public class LoginPart {
         users.get(username).UName = UName;
     }
 
-    public void setPassword(String username, String password) {
+    public void setPassword(String username, String password) throws UnsupportedEncodingException {
         password = runMd5(password);
         sql.runSQL("UPDATE Users.[user] SET password = '" + password + "' WHERE username = '" + username + "'");
         users.get(username).password = password;
@@ -242,6 +244,8 @@ public class LoginPart {
             login.setUName("test", "test");
             login.setPassword("test", "123456");
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }

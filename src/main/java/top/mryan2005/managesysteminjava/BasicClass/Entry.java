@@ -64,7 +64,7 @@ public class Entry {
 
     public String generateCurrentHash() throws UnsupportedEncodingException {
         Base64 base64 = new Base64();
-        currentHash = DigestUtils.md5Hex(html.getBytes("utf-8"));
+        currentHash = DigestUtils.md5Hex(base64.encode(html.getBytes("GBK")));
         return currentHash;
     }
 

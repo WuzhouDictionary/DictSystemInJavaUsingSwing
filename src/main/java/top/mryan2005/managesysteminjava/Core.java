@@ -1,4 +1,6 @@
 package top.mryan2005.managesysteminjava;
+import top.mryan2005.managesysteminjava.BasicClass.LoginPart;
+import top.mryan2005.managesysteminjava.BasicClass.User;
 import top.mryan2005.managesysteminjava.ConnectToNet.POSTAndGET;
 import top.mryan2005.managesysteminjava.SQLs.SQLLinker;
 import top.mryan2005.managesysteminjava.Settings.Info;
@@ -6,6 +8,7 @@ import top.mryan2005.managesysteminjava.Settings.Info;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +25,10 @@ public class Core extends JFrame {
     public Info info = new Info();
 
     private SQLLinker sql;
+
+    private LoginPart loginPart;
+
+    private User currentUser;
 
     private boolean isLogin = false;
 
@@ -197,6 +204,7 @@ public class Core extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0,0,1729,972);
         sql = new SQLLinker("SQL Server", "127.0.0.1", "1433", "sa", "123456", "wuzhouDict");
+        loginPart = new LoginPart(sql);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -527,7 +535,18 @@ public class Core extends JFrame {
         LoginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    if(loginPart.login(jTextFieldUsername.getText(), jTextFieldPassword.getText())) {
+                        isLogin = true;
+                        currentUser = new User();
+                        currentUser.loadUser(jTextFieldUsername.getText(), sql);
+                        jDialogInput.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(jDialogInput, "Login Failed");
+                    }
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         gbc.fill = GridBagConstraints.CENTER;

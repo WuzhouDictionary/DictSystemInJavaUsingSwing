@@ -1,5 +1,10 @@
 package top.mryan2005.managesysteminjava.BasicClass;
 
+import top.mryan2005.managesysteminjava.SQLs.SQLLinker;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class User {
     public String username;    // 用户名
     public String password;    // 密码
@@ -17,5 +22,30 @@ public class User {
         this.UName = UName;
         this.avatar = avatar;
         this.sex = "Unknown";
+    }
+
+    public User() {
+    }
+
+    public void loadUser(String username, SQLLinker sql) {
+        if (username == null) {
+            return;
+        }
+        try {
+            ResultSet res = sql.runSQL("SELECT * FROM Users.[user] WHERE username = '" + username + "'");
+            if (res == null) {
+                return;
+            }
+            while (res.next()) {
+                this.username = res.getString("username");
+                this.password = res.getString("password");
+                this.level = res.getInt("level");
+                this.role = res.getString("role");
+                this.UName = res.getString("name");
+                this.avatar = res.getString("avator");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

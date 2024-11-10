@@ -63,6 +63,12 @@ public class LoginPart {
         sql = sql1;
     }
 
+    public void setSQL(SQLLinker sql1) {
+        sql = sql1;
+    }
+
+    public LoginPart() {}
+
     public void register(String username, String password, String Sex, String UName) throws UnsupportedEncodingException {
         readUsersTable();
         if (username.matches("") || password.matches("") || UName.matches("")) {

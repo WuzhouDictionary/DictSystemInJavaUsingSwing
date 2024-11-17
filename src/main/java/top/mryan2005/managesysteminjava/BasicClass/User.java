@@ -43,6 +43,7 @@ public class User {
                 this.role = res.getString("role");
                 this.UName = res.getString("name");
                 this.avatar = res.getString("avator");
+                this.sex = res.getString("Sex");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -48,4 +48,16 @@ public class User {
             throw new RuntimeException(e);
         }
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getDisplayName() {
+        return UName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
 }

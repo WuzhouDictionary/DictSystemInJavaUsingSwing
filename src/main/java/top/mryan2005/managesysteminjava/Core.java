@@ -192,6 +192,8 @@ public class Core extends JFrame {
             gbc.weightx = 0.0; // 当窗口放大时，长度不变
             gbc.weighty = 0.0; // 当窗口放大时，高度不变
             JButton jButtonRegister = new JButton("Register");
+            JButton jButtonUserInfo = new JButton("用户个人信息");
+            JButton jButtonLogout = new JButton("登出");
             jButtonRegister.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -199,6 +201,8 @@ public class Core extends JFrame {
                     if(isLogin) {
                         jButtonLogin.setEnabled(false);
                         jButtonRegister.setEnabled(false);
+                        jButtonUserInfo.setEnabled(true);
+                        jButtonLogout.setEnabled(true);
                     }
                 }
             });
@@ -209,10 +213,54 @@ public class Core extends JFrame {
                     if(isLogin) {
                         jButtonLogin.setEnabled(false);
                         jButtonRegister.setEnabled(false);
+                        jButtonUserInfo.setEnabled(true);
+                        jButtonLogout.setEnabled(true);
                     }
                 }
             });
             jDialog.add(jButtonRegister, gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jButtonUserInfo.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (isLogin) {
+                        createUserInfoWindow(jDialog);
+                    } else {
+                        JOptionPane.showMessageDialog(jDialog, "请先登录");
+                    }
+                }
+            });
+            jDialog.add(jButtonUserInfo, gbc);
+            jButtonLogout.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (isLogin) {
+                        isLogin = false;
+                        currentUser = null;
+                        jButtonLogin.setEnabled(true);
+                        jButtonRegister.setEnabled(true);
+                        jButtonUserInfo.setEnabled(false);
+                        jButtonLogout.setEnabled(false);
+                        JOptionPane.showMessageDialog(jDialog, "Logout Successfully");
+                    } else {
+                        JOptionPane.showMessageDialog(jDialog, "You are not login");
+                    }
+                }
+            });
+            gbc.gridx = 0;
+            gbc.gridy = 3;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jDialog.add(jButtonLogout, gbc);
+            jButtonUserInfo.setEnabled(false);
+            jButtonLogout.setEnabled(false);
             jDialog.setVisible(true);
         });
         dockBar.add(button3);
@@ -635,6 +683,8 @@ public class Core extends JFrame {
                     }
                     String registerResult = loginPart.register(jTextFieldUsername.getText(), jTextFieldPassword.getText(), jComboBoxSex.getSelectedItem().toString(), jTextFieldDisplayName.getText());
                     if(registerResult.equals("Success!")) {
+                        currentUser = new User();
+                        currentUser.loadUser(jTextFieldUsername.getText(), sql);
                         JOptionPane.showMessageDialog(jDialogInput, "注册成功！");
                     } else {
                         JOptionPane.showMessageDialog(jDialogInput, registerResult);
@@ -735,6 +785,21 @@ public class Core extends JFrame {
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialogInput.add(LoginButton, gbc);
         jDialogInput.setVisible(true);
+    }
+
+    public void createUserInfoWindow(JDialog owner) {
+        JDialog jDialogUserInfo = new JDialog(owner, "用户信息", true);
+        jDialogUserInfo.setBounds(0, 0, 600, 500);
+        jDialogUserInfo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialogUserInfo.setLayout(new FlowLayout());
+        JLabel jLabel = new JLabel("<html><body>" +
+                "<p style=\"font-size:20px;\">用户名: " + currentUser.getUsername() + "</p><br/>" +
+                "<p style=\"font-size:20px;\">昵称: "   + currentUser.getDisplayName() + "</p><br/>" +
+                "<p style=\"font-size:20px;\">性别: " + currentUser.getSex() + "</p><br/>" +
+                "</body></html>"
+        );
+        jDialogUserInfo.add(jLabel);
+        jDialogUserInfo.setVisible(true);
     }
 
     public void createViewWindow() {

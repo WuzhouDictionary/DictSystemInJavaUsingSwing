@@ -68,16 +68,23 @@ public class LoginPart {
 
     public LoginPart() {}
 
-    public void register(String username, String password, String Sex, String UName) throws UnsupportedEncodingException {
+    public String register(String username, String password, String Sex, String UName) throws UnsupportedEncodingException {
         readUsersTable();
         if (username.matches("") || password.matches("") || UName.matches("")) {
-            return;
+            return "用户名、密码或昵称不能为空！";
         }
         if(users.containsKey(username)) {
-            return;
+            return "用户名已存在！";
         }
         password = runMd5(password);
-        sql.runSQL("INSERT INTO Users.[user] (id, username, password, Sex, name) VALUES ('" + getMaxId() +"', '" + username + "', '" + password + "', '" + Sex + "', '" + UName + "')");
+        char sex = 'M';
+        if(Sex.matches("男")) {
+            sex = 'M';      // 男
+        } else {
+            sex = 'F';      // 女
+        }
+        sql.runSQL("INSERT INTO Users.[user] (id, username, password, Sex, name) VALUES ('" + getMaxId() +"', '" + username + "', '" + password + "', '" + sex + "', '" + UName + "')");
+        return "Success!";
     }
 
     public boolean login(String username, String password) throws UnsupportedEncodingException {

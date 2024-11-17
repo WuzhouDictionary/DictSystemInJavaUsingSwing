@@ -184,13 +184,35 @@ public class Core extends JFrame {
             gbc.weightx = 0.0; // 当窗口放大时，长度不变
             gbc.weighty = 0.0; // 当窗口放大时，高度不变
             JButton jButtonLogin = new JButton("Login");
+            jDialog.add(jButtonLogin, gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            JButton jButtonRegister = new JButton("Register");
+            jButtonRegister.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    createRegisterWindow(jDialog);
+                    if(isLogin) {
+                        jButtonLogin.setEnabled(false);
+                        jButtonRegister.setEnabled(false);
+                    }
+                }
+            });
             jButtonLogin.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     createLoginWindow(jDialog);
+                    if(isLogin) {
+                        jButtonLogin.setEnabled(false);
+                        jButtonRegister.setEnabled(false);
+                    }
                 }
             });
-            jDialog.add(jButtonLogin, gbc);
+            jDialog.add(jButtonRegister, gbc);
             jDialog.setVisible(true);
         });
         dockBar.add(button3);
@@ -429,14 +451,14 @@ public class Core extends JFrame {
                 });
                 jDialog1.setVisible(true);
             } else if("Yours".matches(comboBox.getSelectedItem().toString())) {
-                JDialog jDialog1 = new JDialog(this, "Input Your Token", true);
+                JDialog jDialog1 = new JDialog(this, "输入你的Token", true);
                 jDialog1.setSize(200, 300);
                 jDialog1.setLayout(new GridBagLayout());
                 Insets insets1 = new Insets(10, 10, 10, 10);
                 GridBagConstraints gbc1 = new GridBagConstraints();
                 gbc1.fill = GridBagConstraints.BOTH;
                 gbc1.insets = insets1;
-                JButton jButton1 = new JButton("Submit");
+                JButton jButton1 = new JButton("提交");
                 gbc1.gridx = 1;
                 gbc1.gridy = 1;
                 gbc1.gridwidth = 1; // 横占一个单元格
@@ -444,7 +466,7 @@ public class Core extends JFrame {
                 gbc1.weightx = 0.0; // 当窗口放大时，长度不变
                 gbc1.weighty = 0.0; // 当窗口放大时，高度不变
                 jDialog1.add(jButton1, gbc1);
-                JLabel YourToken = new JLabel("Your Token: ");
+                JLabel YourToken = new JLabel("你的Token: ");
                 gbc1.gridx = 0;
                 gbc1.gridy = 0;
                 gbc1.gridwidth = 1; // 横占一个单元格
@@ -480,6 +502,160 @@ public class Core extends JFrame {
 
     public boolean canLogin() {
         return isLogin;
+    }
+
+    public void createRegisterWindow(JDialog owner) {
+        JDialog jDialogInput = new JDialog(owner, "注册", true);
+        jDialogInput.setBounds(0, 0, 600, 500);
+        jDialogInput.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jDialogInput.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        Insets insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        JLabel jlabelUsername = new JLabel("用户名: ");
+        jDialogInput.add(jlabelUsername, gbc);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        JTextField jTextFieldUsername = new JTextField("", 20);
+        jlabelUsername.setSize(100, 50);
+        jDialogInput.add(jTextFieldUsername, gbc);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        JLabel jlabelDisplayName = new JLabel("昵称: ");
+        jlabelDisplayName.setSize(100, 50);
+        jDialogInput.add(jlabelDisplayName, gbc);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        JTextField jTextFieldDisplayName = new JTextField("", 20);
+        jTextFieldDisplayName.setSize(100, 50);
+        jDialogInput.add(jTextFieldDisplayName, gbc);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        JLabel jlabelPassword = new JLabel("密码: ");
+        jlabelPassword.setSize(100, 50);
+        jDialogInput.add(jlabelPassword, gbc);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        JTextField jTextFieldPassword = new JTextField("", 20);
+        jDialogInput.add(jTextFieldPassword, gbc);
+        JLabel jlabelPassword2 = new JLabel("再次输入密码: ");
+        jlabelPassword2.setSize(100, 50);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogInput.add(jlabelPassword2, gbc);
+        JTextField jTextFieldPassword2 = new JTextField("", 20);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogInput.add(jTextFieldPassword2, gbc);
+        JLabel jlabelSex = new JLabel("性别: ");
+        jlabelSex.setSize(100, 50);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogInput.add(jlabelSex, gbc);
+        JComboBox jComboBoxSex = new JComboBox();
+        String[] selections = new String[2];
+        selections[0] = "男";
+        selections[1] = "女";
+        for(String item: selections) {
+            jComboBoxSex.addItem(item);
+        }
+        jComboBoxSex.setSize(100, 50);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = insets;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogInput.add(jComboBoxSex, gbc);
+        JButton RegisterButton = new JButton("注册");
+        RegisterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if(!(jTextFieldPassword.getText().equals(jTextFieldPassword2.getText()))) {
+                        JOptionPane.showMessageDialog(jDialogInput, "密码不一致");
+                        return;
+                    }
+                    String registerResult = loginPart.register(jTextFieldUsername.getText(), jTextFieldPassword.getText(), jComboBoxSex.getSelectedItem().toString(), jTextFieldDisplayName.getText());
+                    if(registerResult.equals("Success!")) {
+                        JOptionPane.showMessageDialog(jDialogInput, "注册成功！");
+                    } else {
+                        JOptionPane.showMessageDialog(jDialogInput, registerResult);
+                    }
+                    isLogin = true;
+                    jDialogInput.dispose();
+                } catch (UnsupportedEncodingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        gbc.fill = GridBagConstraints.CENTER;
+        gbc.insets = insets;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1; // 横占一个单元格
+        gbc.gridheight = 1; // 列占一个单元格
+        gbc.weightx = 0.0; // 当窗口放大时，长度不变
+        gbc.weighty = 0.0; // 当窗口放大时，高度不变
+        jDialogInput.add(RegisterButton, gbc);
+        jDialogInput.setVisible(true);
     }
 
     public void createLoginWindow(JDialog owner) {
@@ -529,7 +705,7 @@ public class Core extends JFrame {
         gbc.gridheight = 1; // 列占一个单元格
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
-        JTextField jTextFieldPassword = new JTextField("", 20);
+        JPasswordField jTextFieldPassword = new JPasswordField("", 20);
         jDialogInput.add(jTextFieldPassword, gbc);
         JButton LoginButton = new JButton("Login");
         LoginButton.addActionListener(new ActionListener() {

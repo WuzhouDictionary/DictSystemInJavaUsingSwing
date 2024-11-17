@@ -626,59 +626,63 @@ public class Core extends JFrame {
         String place = null;
         if(types[1].matches("梧州")) {
             place = "Wuzhou";
+        } else if(types[1].matches("苍梧石桥")) {
+            place = "Cangwu_Shiqiao";
+        } else if(types[1].matches("蒙山")) {
+            place = "Mengshan";
         }
         if(types[0].matches("A"))
             res = sql.runSQL("SELECT * FROM entry.main WHERE Pronunciation_of_"+place+" LIKE 'a%' ORDER BY id");
         else if(types[0].matches("B"))
-            res = sql.runSQL("SELECT * FROM entry.bPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry[main] WHERE Pronunciation_of_"+place+" LIKE 'b%' ORDER BY id");
         else if(types[0].matches("C"))
-            res = sql.runSQL("SELECT * FROM entry.cPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'c%' ORDER BY id");
         else if(types[0].matches("D"))
-            res = sql.runSQL("SELECT * FROM entry.dPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'd%' ORDER BY id");
         else if(types[0].matches("E"))
-            res = sql.runSQL("SELECT * FROM entry.ePart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'e%' ORDER BY id");
         else if(types[0].matches("F"))
-            res = sql.runSQL("SELECT * FROM entry.fPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'f%' ORDER BY id");
         else if(types[0].matches("G"))
-            res = sql.runSQL("SELECT * FROM entry.gPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'g%' ORDER BY id");
         else if(types[0].matches("H"))
-            res = sql.runSQL("SELECT * FROM entry.hPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'h%' ORDER BY id");
         else if(types[0].matches("I"))
-            res = sql.runSQL("SELECT * FROM entry.iPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'i%' ORDER BY id");
         else if(types[0].matches("J"))
-            res = sql.runSQL("SELECT * FROM entry.jPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'j%' ORDER BY id");
         else if(types[0].matches("K"))
-            res = sql.runSQL("SELECT * FROM entry.kPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'k%' ORDER BY id");
         else if(types[0].matches("L"))
-            res = sql.runSQL("SELECT * FROM entry.lPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'l%' ORDER BY id");
         else if(types[0].matches("M"))
-            res = sql.runSQL("SELECT * FROM entry.mPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'm%' ORDER BY id");
         else if(types[0].matches("N"))
-            res = sql.runSQL("SELECT * FROM entry.nPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'n%' ORDER BY id");
         else if(types[0].matches("O"))
-            res = sql.runSQL("SELECT * FROM entry.oPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'o%' ORDER BY id");
         else if(types[0].matches("P"))
-            res = sql.runSQL("SELECT * FROM entry.pPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'p%' ORDER BY id");
         else if(types[0].matches("Q"))
-            res = sql.runSQL("SELECT * FROM entry.qPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'q%' ORDER BY id");
         else if(types[0].matches("R"))
-            res = sql.runSQL("SELECT * FROM entry.rPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'r%' ORDER BY id");
         else if(types[0].matches("S"))
-            res = sql.runSQL("SELECT * FROM entry.sPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 's%' ORDER BY id");
         else if(types[0].matches("T"))
-            res = sql.runSQL("SELECT * FROM entry.tPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 't%' ORDER BY id");
         else if(types[0].matches("U"))
-            res = sql.runSQL("SELECT * FROM entry.uPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'u%' ORDER BY id");
         else if(types[0].matches("V"))
-            res = sql.runSQL("SELECT * FROM entry.vPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'v%' ORDER BY id");
         else if(types[0].matches("W"))
-            res = sql.runSQL("SELECT * FROM entry.wPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'w%' ORDER BY id");
         else if(types[0].matches("X"))
-            res = sql.runSQL("SELECT * FROM entry.xPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'x%' ORDER BY id");
         else if(types[0].matches("Y"))
-            res = sql.runSQL("SELECT * FROM entry.yPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'y%' ORDER BY id");
         else if(types[0].matches("Z"))
-            res = sql.runSQL("SELECT * FROM entry.zPart ORDER BY id");
+            res = sql.runSQL("SELECT * FROM entry.[main] WHERE Pronunciation_of_"+place+" LIKE 'z%' ORDER BY id");
         else if(types[0].matches("All"))
             res = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
         else

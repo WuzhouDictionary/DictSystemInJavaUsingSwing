@@ -396,6 +396,8 @@ public class Core extends JFrame {
                     gridBagConstraints.weightx = 1;
                     gridBagConstraints.weighty = 1;
                     JButton jButton = new JButton("搜索");
+                    JButton jButton1 = new JButton("删除");
+                    jButton1.setEnabled(false);
                     jButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -422,6 +424,8 @@ public class Core extends JFrame {
                                 for(int i = 0; i < l.size(); i++) {
                                     model.addRow(l.get(i));
                                 }
+                                jButton1.setEnabled(true);
+                                needDelete[0] = -1;
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
@@ -435,7 +439,6 @@ public class Core extends JFrame {
                     jDialog2.add(jButton, gridBagConstraints);
                     JPanel jPanel = new JPanel();
                     jPanel.setLayout(new FlowLayout());
-                    JButton jButton1 = new JButton("删除");
                     jButton1.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -446,6 +449,7 @@ public class Core extends JFrame {
                             if(needDelete[0] != -1) {
                                 sql.runSQL("DELETE FROM entry.[main] WHERE id = " + needDelete[0]);
                                 jDialog1.dispose();
+                                needDelete[0] = -1;
                             } else {
                                 JOptionPane.showMessageDialog(jDialog1, "请选择要删除的词条");
                             }
@@ -489,7 +493,10 @@ public class Core extends JFrame {
             jButtonUpdate.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ;
+                    JDialog jDialog1 = new JDialog(jDialog);
+                    jDialog1.setSize(800, 600);
+                    jDialog1.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    jDialog1.setLayout(new GridBagLayout());
                 }
             });
             jDialog.setVisible(true);

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import static java.lang.Integer.valueOf;
@@ -372,6 +373,22 @@ public class Core extends JFrame {
                     gridBagConstraints.gridheight = 1;
                     JTextField jTextField = new JTextField("", 100);
                     jDialog2.add(jTextField, gridBagConstraints);
+                    String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
+                    List<Object[]> l = new ArrayList<>();
+                    DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames) {
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    JTable jTable = new JTable(model);
+                    JScrollPane jScrollPane = new JScrollPane(jTable);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 0;
+                    gridBagConstraints.gridwidth = 1;
+                    gridBagConstraints.gridheight = 1;
+                    gridBagConstraints.weightx = 0;
+                    gridBagConstraints.weighty = 0;
+                    jDialog1.add(jScrollPane, gridBagConstraints);
                     gridBagConstraints.gridx = 0;
                     gridBagConstraints.gridy = 1;
                     gridBagConstraints.gridwidth = 1;
@@ -396,14 +413,14 @@ public class Core extends JFrame {
                                     try {
                                         ResultSet resultSet1 = sql.runSQL("SELECT * FROM entry.[main] WHERE id = " + list.get(i));
                                         while (resultSet1.next()) {
-                                            l.add(new Object[]{resultSet.getString("id"), resultSet.getString("simplified_Chinese_character"), resultSet.getString("traditional_Chinese_character"), resultSet.getString("Pronunciation_of_Wuzhou"), resultSet.getString("Pronunciation_of_Cangwu_Shiqiao"), resultSet.getString("Pronunciation_of_Mengshan")});
+                                            l.add(new Object[]{resultSet1.getInt("id"), resultSet1.getString("simplified_Chinese_character"), resultSet1.getString("traditional_Chinese_character"), resultSet1.getString("Pronunciation_of_Wuzhou"), resultSet1.getString("Pronunciation_of_Cangwu_Shiqiao"), resultSet1.getString("Pronunciation_of_Mengshan")});
                                         }
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
                                     }
                                 }
                                 for(int i = 0; i < l.size(); i++) {
-                                    jTable.add(new Object[]{l.get(i)[0], l.get(i)[1], l.get(i)[2], l.get(i)[3], l.get(i)[4], l.get(i)[5]});
+                                    model.addRow(l.get(i));
                                 }
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
@@ -416,17 +433,6 @@ public class Core extends JFrame {
                         }
                     });
                     jDialog2.add(jButton, gridBagConstraints);
-                    String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
-                    List<Object[]> l = new ArrayList<>();
-                    JTable jTable = new JTable(l.toArray(new Object[0][0]), columnNames);
-                    JScrollPane jScrollPane = new JScrollPane(jTable);
-                    gridBagConstraints.gridx = 0;
-                    gridBagConstraints.gridy = 0;
-                    gridBagConstraints.gridwidth = 1;
-                    gridBagConstraints.gridheight = 1;
-                    gridBagConstraints.weightx = 0;
-                    gridBagConstraints.weighty = 0;
-                    jDialog1.add(jScrollPane, gridBagConstraints);
                     JPanel jPanel = new JPanel();
                     jPanel.setLayout(new FlowLayout());
                     JButton jButton1 = new JButton("删除");
@@ -470,6 +476,20 @@ public class Core extends JFrame {
                     gridBagConstraints.weighty = 0;
                     jDialog1.add(jPanel, gridBagConstraints);
                     jDialog1.setVisible(true);
+                }
+            });
+            JButton jButtonUpdate = new JButton("更新词条");
+            gbc.gridx = 0;
+            gbc.gridy = 3;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jDialog.add(jButtonUpdate, gbc);
+            jButtonUpdate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ;
                 }
             });
             jDialog.setVisible(true);

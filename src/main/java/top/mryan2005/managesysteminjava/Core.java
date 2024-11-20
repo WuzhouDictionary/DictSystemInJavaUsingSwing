@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 
 import static java.lang.Integer.valueOf;
 
@@ -141,6 +142,7 @@ public class Core extends JFrame {
         button2.setOpaque(true);
         button2.setVisible(true);
         button2.addActionListener(e -> {
+            final int[] needDelete = {-1};
             JDialog jDialog = new JDialog(this, "Admin", true);
             jDialog.setBounds(0, 0, 300, 500);
             jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -149,7 +151,7 @@ public class Core extends JFrame {
             Insets insets = new Insets(10, 10, 10, 10);
             gbc.fill = GridBagConstraints.BOTH;
             gbc.insets = insets;
-            JButton jButtonShowAll = new JButton("Show All");
+            JButton jButtonShowAll = new JButton("展示所有字词");
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 1; // 横占一个单元格
@@ -157,6 +159,319 @@ public class Core extends JFrame {
             gbc.weightx = 0.0; // 当窗口放大时，长度不变
             gbc.weighty = 0.0; // 当窗口放大时，高度不变
             jDialog.add(jButtonShowAll, gbc);
+            jButtonShowAll.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JDialog jDialog1 = new JDialog(jDialog, "查看所有词条", true);
+                    jDialog1.setBounds(0, 0, 800, 500);
+                    jDialog1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    jDialog1.setLayout(new FlowLayout());
+                    String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
+                    List<Object[]> l = new ArrayList<>();
+                    try {
+                        ResultSet resultSet = sql.runSQL("SELECT * FROM entry.viewAll ORDER BY id");
+                        while(resultSet.next()) {
+                            l.add(new Object[]{resultSet.getString("id"), resultSet.getString("simplified_Chinese_character"), resultSet.getString("traditional_Chinese_character"), resultSet.getString("Pronunciation_of_Wuzhou"), resultSet.getString("Pronunciation_of_Cangwu_Shiqiao"), resultSet.getString("Pronunciation_of_Mengshan")});
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    JTable jTable = new JTable(l.toArray(new Object[0][0]), columnNames);
+                    JScrollPane jScrollPane = new JScrollPane(jTable);
+                    jDialog1.add(jScrollPane);
+                    jDialog1.setVisible(true);
+                }
+            });
+            JButton jButtonAdd = new JButton("添加词条");
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jDialog.add(jButtonAdd, gbc);
+            jButtonAdd.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JDialog jDialog1 = new JDialog(jDialog);
+                    jDialog1.setSize(800, 600);
+                    jDialog1.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    jDialog1.setLayout(new GridBagLayout());
+                    GridBagConstraints gridBagConstraints = new GridBagConstraints();
+                    gridBagConstraints.fill = GridBagConstraints.BOTH;
+                    gridBagConstraints.weightx = 1;
+                    gridBagConstraints.weighty = 1;
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 0;
+                    gridBagConstraints.gridwidth = 1;
+                    gridBagConstraints.gridheight = 1;
+                    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+                    jDialog1.add(new JLabel("简体中文字符"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldSimplifiedChineseCharacter = new JTextField("" ,100);
+                    jDialog1.add(jTextFieldSimplifiedChineseCharacter, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 1;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("繁体中文字符"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldTraditionalChineseCharacter = new JTextField("", 100);
+                    jDialog1.add(jTextFieldTraditionalChineseCharacter, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 2;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("梧州话发音"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldPoWuzhou = new JTextField("", 100);
+                    jDialog1.add(jTextFieldPoWuzhou, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 3;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("苍梧石桥话发音"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldPoCangwuShiqiao = new JTextField("", 100);
+                    jDialog1.add(jTextFieldPoCangwuShiqiao, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 4;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("蒙山话发音"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldPoMengshan = new JTextField("", 100);
+                    jDialog1.add(jTextFieldPoMengshan, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 5;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("同类异文"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldHeterozygousAncientTextsOfTheSameType = new JTextField("", 100);
+                    jDialog1.add(jTextFieldHeterozygousAncientTextsOfTheSameType, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 6;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("简体部首"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldRadicalSimplified = new JTextField("", 100);
+                    jDialog1.add(jTextFieldRadicalSimplified, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 7;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("繁体部首"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldRadicalTraditional = new JTextField("", 100);
+                    jDialog1.add(jTextFieldRadicalTraditional, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 8;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("偏旁部首笔画数（简体）"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldTotalNumberOfRadicalStrokesSimplified = new JTextField("", 100);
+                    jDialog1.add(jTextFieldTotalNumberOfRadicalStrokesSimplified, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 9;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("偏旁部首笔画数（繁体）"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldTotalNumberOfRadicalStrokesTraditional = new JTextField("", 100);
+                    jDialog1.add(jTextFieldTotalNumberOfRadicalStrokesTraditional, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 10;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("笔画数（简体）"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldTotalNumberOfStrokesSimplified = new JTextField("", 100);
+                    jDialog1.add(jTextFieldTotalNumberOfStrokesSimplified, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 11;
+                    gridBagConstraints.gridwidth = 1;
+                    jDialog1.add(new JLabel("笔画数（繁体）"), gridBagConstraints);
+                    gridBagConstraints.gridx = 1;
+                    gridBagConstraints.gridwidth = 3;
+                    JTextField jTextFieldTotalNumberOfStrokesTraditional = new JTextField("", 100);
+                    jDialog1.add(jTextFieldTotalNumberOfStrokesTraditional, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 12;
+                    gridBagConstraints.gridwidth = 1;
+                    JButton jButton = new JButton("保存");
+                    jDialog1.add(jButton, gridBagConstraints);
+                    jButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String simplified_Chinese_character, traditional_Chinese_character, Pronunciation_of_Wuzhou, Pronunciation_of_Cangwu_Shiqiao, Pronunciation_of_Mengshan, Heterozygous_Ancient_Texts_of_the_Same_Type, Radical_simplified, Radical_traditional;
+                            int total_number_of_radical_strokes_simplified, total_number_of_radical_strokes_traditional, total_number_of_strokes_simplified, total_number_of_strokes_traditional;
+                            simplified_Chinese_character = jTextFieldSimplifiedChineseCharacter.getText();
+                            traditional_Chinese_character = jTextFieldTraditionalChineseCharacter.getText();
+                            Pronunciation_of_Wuzhou = jTextFieldPoWuzhou.getText();
+                            Pronunciation_of_Cangwu_Shiqiao = jTextFieldPoCangwuShiqiao.getText();
+                            Pronunciation_of_Mengshan = jTextFieldPoMengshan.getText();
+                            Heterozygous_Ancient_Texts_of_the_Same_Type = jTextFieldHeterozygousAncientTextsOfTheSameType.getText();
+                            Radical_simplified = jTextFieldRadicalSimplified.getText();
+                            Radical_traditional = jTextFieldRadicalTraditional.getText();
+                            total_number_of_radical_strokes_simplified = Integer.parseInt(jTextFieldTotalNumberOfRadicalStrokesSimplified.getText());
+                            total_number_of_radical_strokes_traditional = Integer.parseInt(jTextFieldTotalNumberOfRadicalStrokesTraditional.getText());
+                            total_number_of_strokes_simplified = Integer.parseInt(jTextFieldTotalNumberOfStrokesSimplified.getText());
+                            total_number_of_strokes_traditional = Integer.parseInt(jTextFieldTotalNumberOfStrokesTraditional.getText());
+                            int maxId = 0;
+                            try {
+                                ResultSet resultSet = sql.runSQL("SELECT MAX(id) FROM entry.[main]");
+                                while(resultSet.next()) {
+                                    maxId = resultSet.getInt(1);
+                                }
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            if(simplified_Chinese_character.equals("") || traditional_Chinese_character.equals("") || Pronunciation_of_Wuzhou.equals("") || Pronunciation_of_Cangwu_Shiqiao.equals("") || Pronunciation_of_Mengshan.equals("") || Heterozygous_Ancient_Texts_of_the_Same_Type.equals("") || Radical_simplified.equals("") || Radical_traditional.equals("")) {
+                                JOptionPane.showMessageDialog(jDialog1, "请填写完整");
+                                return;
+                            }
+                            sql.runSQL("INSERT INTO entry.[main] (id, simplified_Chinese_character, traditional_Chinese_character, Pronunciation_of_Wuzhou, Pronunciation_of_Cangwu_Shiqiao, Pronunciation_of_Mengshan, Heterozygous_Ancient_Texts_of_the_Same_Type, Radical_simplified, Radical_traditional, total_number_of_strokes_simplified, total_number_of_strokes_traditional, total_number_of_radical_strokes_simplified, total_number_of_radical_strokes_traditional) VALUES (" + (maxId + 1) + ", '" + simplified_Chinese_character + "', '" + traditional_Chinese_character + "', '" + Pronunciation_of_Wuzhou + "', '" + Pronunciation_of_Cangwu_Shiqiao + "', '" + Pronunciation_of_Mengshan + "', '" + Heterozygous_Ancient_Texts_of_the_Same_Type + "', '" + Radical_simplified + "', '" + Radical_traditional + "', " + total_number_of_strokes_simplified + ", " + total_number_of_strokes_traditional + ", " + total_number_of_radical_strokes_simplified + ", " + total_number_of_radical_strokes_traditional + ")");
+                            jDialog1.dispose();
+                        }
+                    });
+                    jDialog1.setVisible(true);
+                }
+            });
+
+            JButton jButtonDelete = new JButton("删除词条");
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 1; // 横占一个单元格
+            gbc.gridheight = 1; // 列占一个单元格
+            gbc.weightx = 0.0; // 当窗口放大时，长度不变
+            gbc.weighty = 0.0; // 当窗口放大时，高度不变
+            jDialog.add(jButtonDelete, gbc);
+            jButtonDelete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JDialog jDialog1 = new JDialog(jDialog);
+                    List<Integer> list = new ArrayList<>();
+                    JDialog jDialog2 = new JDialog(jDialog1);
+                    jDialog1.setSize(800, 600);
+                    jDialog1.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    jDialog1.setLayout(new GridBagLayout());
+                    jDialog2.setSize(800, 600);
+                    jDialog2.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    jDialog2.setLayout(new GridBagLayout());
+                    GridBagConstraints gridBagConstraints = new GridBagConstraints();
+                    gridBagConstraints.fill = GridBagConstraints.BOTH;
+                    gridBagConstraints.weightx = 1;
+                    gridBagConstraints.weighty = 1;
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 0;
+                    gridBagConstraints.gridwidth = 1;
+                    gridBagConstraints.gridheight = 1;
+                    JTextField jTextField = new JTextField("", 100);
+                    jDialog2.add(jTextField, gridBagConstraints);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 1;
+                    gridBagConstraints.gridwidth = 1;
+                    gridBagConstraints.gridheight = 1;
+                    gridBagConstraints.weightx = 1;
+                    gridBagConstraints.weighty = 1;
+                    JButton jButton = new JButton("搜索");
+                    jButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(jTextField.getText().equals("")) {
+                                JOptionPane.showMessageDialog(jDialog2, "请输入要删除的词条");
+                                return;
+                            }
+                            ResultSet resultSet = sql.runSQL("SELECT * FROM entry.[main] WHERE simplified_Chinese_character = '" + jTextField.getText() + "'");
+                            try {
+                                while(resultSet.next()) {
+                                    list.add(resultSet.getInt("id"));
+                                }
+                                List<Object[]> l = new ArrayList<>();
+                                for(int i = 0; i < list.size(); i++) {
+                                    try {
+                                        ResultSet resultSet1 = sql.runSQL("SELECT * FROM entry.[main] WHERE id = " + list.get(i));
+                                        while (resultSet1.next()) {
+                                            l.add(new Object[]{resultSet.getString("id"), resultSet.getString("simplified_Chinese_character"), resultSet.getString("traditional_Chinese_character"), resultSet.getString("Pronunciation_of_Wuzhou"), resultSet.getString("Pronunciation_of_Cangwu_Shiqiao"), resultSet.getString("Pronunciation_of_Mengshan")});
+                                        }
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                }
+                                for(int i = 0; i < l.size(); i++) {
+                                    jTable.add(new Object[]{l.get(i)[0], l.get(i)[1], l.get(i)[2], l.get(i)[3], l.get(i)[4], l.get(i)[5]});
+                                }
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            if(list.size() == 0) {
+                                JOptionPane.showMessageDialog(jDialog2, "未找到该词条");
+                                return;
+                            }
+                            jDialog2.dispose();
+                        }
+                    });
+                    jDialog2.add(jButton, gridBagConstraints);
+                    String[] columnNames = {"id", "简体字", "繁体字", "梧州读音", "苍梧石桥读音", "蒙山读音"};
+                    List<Object[]> l = new ArrayList<>();
+                    JTable jTable = new JTable(l.toArray(new Object[0][0]), columnNames);
+                    JScrollPane jScrollPane = new JScrollPane(jTable);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 0;
+                    gridBagConstraints.gridwidth = 1;
+                    gridBagConstraints.gridheight = 1;
+                    gridBagConstraints.weightx = 0;
+                    gridBagConstraints.weighty = 0;
+                    jDialog1.add(jScrollPane, gridBagConstraints);
+                    JPanel jPanel = new JPanel();
+                    jPanel.setLayout(new FlowLayout());
+                    JButton jButton1 = new JButton("删除");
+                    jButton1.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(list.size() == 0) {
+                                JOptionPane.showMessageDialog(jDialog1, "未找到该词条");
+                                return;
+                            }
+                            if(needDelete[0] != -1) {
+                                sql.runSQL("DELETE FROM entry.[main] WHERE id = " + needDelete[0]);
+                                jDialog1.dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(jDialog1, "请选择要删除的词条");
+                            }
+                        }
+                    });
+                    jDialog1.add(jButton1, gridBagConstraints);
+                    JButton jButton2 = new JButton("查找");
+                    jButton2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            jDialog2.setVisible(true);
+                        }
+                    });
+                    jTable.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            int row = jTable.getSelectedRow();
+                            needDelete[0] = (Integer) jTable.getValueAt(row, 0);
+                        }
+                    });
+                    jPanel.add(jButton1);
+                    jPanel.add(jButton2);
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 1;
+                    gridBagConstraints.gridwidth = 1;
+                    gridBagConstraints.gridheight = 1;
+                    gridBagConstraints.weightx = 0;
+                    gridBagConstraints.weighty = 0;
+                    jDialog1.add(jPanel, gridBagConstraints);
+                    jDialog1.setVisible(true);
+                }
+            });
             jDialog.setVisible(true);
         });
         dockBar.add(button2);

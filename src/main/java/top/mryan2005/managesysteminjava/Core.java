@@ -107,7 +107,7 @@ public class Core extends JFrame {
             gbc.gridheight = 1; // 列占一个单元格
             gbc.weightx = 0.0; // 当窗口放大时，长度不变
             gbc.weighty = 0.0; // 当窗口放大时，高度不变
-            JButton jButtonSearch = new JButton("Search");
+            JButton jButtonSearch = new JButton("搜索");
             jButtonSearch.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,7 @@ public class Core extends JFrame {
             gbc.gridheight = 1; // 列占一个单元格
             gbc.weightx = 0.0; // 当窗口放大时，长度不变
             gbc.weighty = 0.0; // 当窗口放大时，高度不变
-            JButton jButtonViewAll = new JButton("View All");
+            JButton jButtonViewAll = new JButton("查看");
             jButtonViewAll.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -1201,6 +1201,10 @@ public class Core extends JFrame {
                 jButton1.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        if(keyToken.getText().toString().equals("")) {
+                            JOptionPane.showMessageDialog(jDialog1, "请输入Token");
+                            return;
+                        }
                         POSTAndGET postAndGet = new POSTAndGET(keyToken.getText().toString());
                         postAndGet.newIssue(jTextFieldTitle.getText(), jTextAreaBody.getText(), new String[]{"ReportedBugs"});
                         JOptionPane.showMessageDialog(jDialog1, "Issue Submitted");
@@ -1288,7 +1292,7 @@ public class Core extends JFrame {
         gbc.gridheight = 1; // 列占一个单元格
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
-        JTextField jTextFieldPassword = new JTextField("", 20);
+        JPasswordField jTextFieldPassword = new JPasswordField("", 20);
         jDialogInput.add(jTextFieldPassword, gbc);
         JLabel jlabelPassword2 = new JLabel("再次输入密码: ");
         jlabelPassword2.setSize(100, 50);
@@ -1301,7 +1305,7 @@ public class Core extends JFrame {
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialogInput.add(jlabelPassword2, gbc);
-        JTextField jTextFieldPassword2 = new JTextField("", 20);
+        JPasswordField jTextFieldPassword2 = new JPasswordField("", 20);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = insets;
         gbc.gridx = 1;
@@ -1355,6 +1359,7 @@ public class Core extends JFrame {
                         JOptionPane.showMessageDialog(jDialogInput, "注册成功！");
                     } else {
                         JOptionPane.showMessageDialog(jDialogInput, registerResult);
+                        return;
                     }
                     isLogin = true;
                     jDialogInput.dispose();
@@ -1645,7 +1650,7 @@ public class Core extends JFrame {
         gbc.weightx = 0.0; // 当窗口放大时，长度不变
         gbc.weighty = 0.0; // 当窗口放大时，高度不变
         jDialog.add(jTextField, gbc);
-        JButton jButton = new JButton("Search");
+        JButton jButton = new JButton("Go");
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1; // 横占一个单元格
